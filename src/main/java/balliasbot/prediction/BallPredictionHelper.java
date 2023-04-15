@@ -1,11 +1,11 @@
-package rlbotexample.prediction;
+package balliasbot.prediction;
 
+import java.awt.Color;
+
+import balliasbot.math.Vector3;
 import rlbot.flat.BallPrediction;
 import rlbot.flat.PredictionSlice;
 import rlbot.render.Renderer;
-import rlbotexample.vector.Vector3;
-
-import java.awt.*;
 
 /**
  * This class can help you get started with ball prediction. Feel free to change it as much as you want,

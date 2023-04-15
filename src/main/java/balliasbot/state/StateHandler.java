@@ -1,0 +1,44 @@
+package balliasbot.state;
+
+import balliasbot.BalliasBot;
+import balliasbot.controls.ControlsOutput;
+import balliasbot.data.DataPacket;
+
+public class StateHandler {
+	
+	public State currentState;
+	
+	private BalliasBot bot;
+	
+	public StateHandler(BalliasBot bot) {
+		this.bot = bot;
+	}
+	
+	public ControlsOutput execState(DataPacket data) {		
+		if(currentState == null) {
+			currentState = selectState(data);	
+		}
+
+		ControlsOutput stateOutput = currentState.exec(data);
+		if(stateOutput != null) {
+			return stateOutput;
+		}
+		
+		currentState = null;
+		
+		return execState(data);
+	}
+	
+	
+	private State selectState(DataPacket data) {
+		State states[] = {
+			new ChaseBall()
+		};
+		
+		for(State state : states) 
+			if(state.isViable(data)) 
+				return state;
+		
+		return new ChaseBall();
+	}
+}

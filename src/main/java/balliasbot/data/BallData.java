@@ -1,8 +1,8 @@
-package rlbotexample.input.ball;
+package balliasbot.data;
 
 
+import balliasbot.math.Vector3;
 import rlbot.flat.BallInfo;
-import rlbotexample.vector.Vector3;
 
 /**
  * Basic information about the ball.

@@ -3,6 +3,7 @@
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 
@@ -10,7 +11,7 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = 'rlbotexample.JavaExample'
+mainClassName = 'balliasbot.BalliasBot'
 
 // This directory will be created and the interface dll copied into it at runtime.
 // The end result is that the interface dll will be available for loading.

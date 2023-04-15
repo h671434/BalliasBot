@@ -1,0 +1,95 @@
+package balliasbot.controls;
+
+import balliasbot.data.CarOrientation;
+import balliasbot.data.DataPacket;
+import balliasbot.math.Vector3;
+
+public class AerialControls extends ControlsOutput {
+
+	public static final double MAX_ANGULAR_VELOCITY = 5.5;
+	public static final Vector3 ANGULAR_ACCELERATION = new Vector3(9.11, 12.46, 37.34);
+	public static final Vector3 ANGULAR_TORQUE = new Vector3(-12.15, 8.92, -36.08);
+	public static final Vector3 ANGULAR_DRAG = new Vector3(-2.80, -1.89, -4.47); 
+	
+	
+	private DataPacket data;
+	private Vector3 localTarget;
+	private Vector3 localUp;
+	
+	public AerialControls(DataPacket data,  Vector3 localTarget, Vector3 localUp) {
+		this.data = data;
+		this.localTarget = localTarget;
+		this.localUp = localUp;
+		initControls();
+	}
+	
+	private void initControls() {
+		align();
+	}
+	
+	private void align() {
+		CarOrientation orientation = data.car.orientation;
+		Vector3 angularVelocity = data.car.angularVelocity;
+		Vector3 localAngVel = orientation.dotProduct(angularVelocity);
+		
+		Vector3 targetAngles = new Vector3(
+				Math.atan2(localTarget.z, localTarget.x),
+				Math.atan2(localTarget.y, localTarget.x),
+				Math.atan2(localUp.x, localUp.z));
+			
+		double steer = pitchYawPD(targetAngles.y , 0); 
+		double pitch = pitchYawPD(targetAngles.x, localAngVel.y * 0.2);
+		double yaw = pitchYawPD(targetAngles.y, -localAngVel.z * 0.15);
+		double roll = rollPD(targetAngles.z, localAngVel.x);
+		
+		withThrottle(1);
+		withSteer(steer);
+		withPitch(pitch);
+		withYaw(yaw);
+		withRoll(roll);
+		
+	}
+	
+	private static double pitchYawPD(double angle, double rate) {
+		return (Math.pow(35*(angle+rate), 3)) / 10;
+	}
+	
+	private static double rollPD(double angle, double angVelx) {
+		double angVelNorm = angVelx / 5.5;
+		double angleNorm = angle / (Math.PI);
+		double deltaTime = DataPacket.DELTA_TIME;
+		
+		double Dr = ANGULAR_DRAG.z;
+		double Tr = ANGULAR_TORQUE.z;
+		
+		double roll = Math.pow(
+				angleNorm + 
+				(Math.signum(angleNorm - angVelNorm) * Tr + Dr) 
+				* angVelNorm * deltaTime , 3) * 10;
+		
+		return roll;
+	}
+	
+	public static ControlsOutput recover(DataPacket data, Vector3 target) {
+		if (target == null) {
+			try {
+				Vector3 velocity = data.car.velocity;
+				Vector3 uprightVelocityDirection = 
+						velocity.flatten(Vector3.UP).normalized();
+				
+				target = data.car.orientation.dotProduct(uprightVelocityDirection);
+				
+			} catch (IllegalStateException e) {
+				Vector3 uprightCarToBall = 
+						data.car.carTo(data.ball.position).flatten(Vector3.UP);
+				
+				target = data.car.orientation.dotProduct(uprightCarToBall);
+			}
+		}
+		
+		Vector3 localUp = data.car.local(Vector3.UP);
+		
+		return new AerialControls(data, target, localUp);
+	}
+	
+}

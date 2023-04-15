@@ -1,16 +1,13 @@
-package rlbotexample.vector;
+package balliasbot.math;
 
 import com.google.flatbuffers.FlatBufferBuilder;
 
-/**
- * A simple 3d vector class with the most essential operations.
- *
- * This class is here for your convenience, it is NOT part of the framework. You can add to it as much
- * as you want, or delete it.
- */
 public class Vector3 extends rlbot.vector.Vector3 {
 
-    public Vector3(double x, double y, double z) {
+	public static final Vector3 ZERO = new Vector3(0, 0, 0);
+	public static final Vector3 UP = new Vector3(0, 0, 1);
+	
+	public Vector3(double x, double y, double z) {
         super((float) x, (float) y, (float) z);
     }
 
@@ -23,7 +20,8 @@ public class Vector3 extends rlbot.vector.Vector3 {
         this(-vec.x(), vec.y(), vec.z());
     }
 
-    public int toFlatbuffer(FlatBufferBuilder builder) {
+    @Override
+	public int toFlatbuffer(FlatBufferBuilder builder) {
         // Invert the X value again so that rlbot sees the format it expects.
         return rlbot.flat.Vector3.createVector3(builder, -x, y, z);
     }
@@ -47,7 +45,9 @@ public class Vector3 extends rlbot.vector.Vector3 {
         if (isZero()) {
             throw new IllegalStateException("Cannot scale up a vector with length zero!");
         }
+        
         double scaleRequired = magnitude / magnitude();
+        
         return scaled(scaleRequired);
     }
 
@@ -55,6 +55,7 @@ public class Vector3 extends rlbot.vector.Vector3 {
         double xDiff = x - other.x;
         double yDiff = y - other.y;
         double zDiff = z - other.z;
+        
         return Math.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
     }
 
@@ -82,9 +83,15 @@ public class Vector3 extends rlbot.vector.Vector3 {
         return x == 0 && y == 0 && z == 0;
     }
 
-    public Vector2 flatten() {
-        return new Vector2(x, y);
+    public Vector3 flatten() {
+        return new Vector3(x, y, 0);
     }
+    
+	public Vector3 flatten(Vector3 up) {
+		up = up.normalized();
+		
+		return minus(up.scaled(dotProduct(up)));
+	}
 
     public double angle(Vector3 v) {
         double mag2 = magnitudeSquared();
@@ -103,5 +110,32 @@ public class Vector3 extends rlbot.vector.Vector3 {
     @Override
     public String toString() {
         return String.format("(%s, %s, %s)", x, y, z);
+    }
+
+    /**
+     * The correction angle is how many radians you need to rotate this vector to make it line up with the "ideal"
+     * vector. This is very useful for deciding which direction to steer.
+     */
+    public double correctionAngle(Vector3 ideal) {
+        double currentRad = Math.atan2(y, x);
+        double idealRad = Math.atan2(ideal.y, ideal.x);
+
+        if (Math.abs(currentRad - idealRad) > Math.PI) {
+            if (currentRad < 0) {
+                currentRad += Math.PI * 2;
+            }
+            if (idealRad < 0) {
+                idealRad += Math.PI * 2;
+            }
+        }
+
+        return idealRad - currentRad;
+    }
+
+    /**
+     * Will always return a positive value <= Math.PI
+     */
+    public static double angle(Vector3 a, Vector3 b) {
+        return Math.abs(a.correctionAngle(b));
     }
 }

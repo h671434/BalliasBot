@@ -1,4 +1,4 @@
-package rlbotexample.output;
+package balliasbot.controls;
 
 import rlbot.ControllerState;
 
@@ -10,51 +10,39 @@ import rlbot.ControllerState;
  */
 public class ControlsOutput implements ControllerState {
 
-    // 0 is straight, -1 is hard left, 1 is hard right.
-    private float steer;
-
-    // -1 for front flip, 1 for back flip
-    private float pitch;
-
-    // 0 is straight, -1 is hard left, 1 is hard right.
-    private float yaw;
-
-    // 0 is straight, -1 is hard left, 1 is hard right.
-    private float roll;
-
-    // 0 is none, -1 is backwards, 1 is forwards
-    private float throttle;
+    private double steer; // 0 is straight, -1 is hard left, 1 is hard right.
+    private double pitch; // -1 for front flip, 1 for back flip
+    private double yaw; // 0 is straight, -1 is hard left, 1 is hard right.
+    private double roll; // 0 is straight, -1 is hard left, 1 is hard right.
+    private double throttle; // 0 is none, -1 is backwards, 1 is forwards
 
     private boolean jumpDepressed;
     private boolean boostDepressed;
     private boolean slideDepressed;
     private boolean useItemDepressed;
 
-    public ControlsOutput() {
-    }
-
-    public ControlsOutput withSteer(float steer) {
+    public ControlsOutput withSteer(double steer) {
         this.steer = clamp(steer);
         return this;
     }
 
-    public ControlsOutput withPitch(float pitch) {
+    public ControlsOutput withPitch(double pitch) {
         this.pitch = clamp(pitch);
         return this;
     }
 
-    public ControlsOutput withYaw(float yaw) {
+    public ControlsOutput withYaw(double yaw) {
         this.yaw = clamp(yaw);
         return this;
     }
 
-    public ControlsOutput withRoll(float roll) {
+    public ControlsOutput withRoll(double roll) {
         this.roll = clamp(roll);
         return this;
     }
 
-    public ControlsOutput withThrottle(float throttle) {
-        this.throttle = clamp(throttle);
+    public ControlsOutput withThrottle(double d) {
+        this.throttle = clamp(d);
         return this;
     }
 
@@ -98,33 +86,33 @@ public class ControlsOutput implements ControllerState {
         return this;
     }
 
-    private float clamp(float value) {
-        return Math.max(-1, Math.min(1, value));
+    private double clamp(double d) {
+        return Math.max(-1, Math.min(1, d));
     }
 
     @Override
     public float getSteer() {
-        return steer;
+        return (float) steer;
     }
 
     @Override
     public float getThrottle() {
-        return throttle;
+        return (float) throttle;
     }
 
     @Override
     public float getPitch() {
-        return pitch;
+        return (float) pitch;
     }
 
     @Override
     public float getYaw() {
-        return yaw;
+        return (float) yaw;
     }
 
     @Override
     public float getRoll() {
-        return roll;
+        return (float) roll;
     }
 
     @Override

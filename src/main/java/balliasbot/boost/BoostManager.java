@@ -1,14 +1,14 @@
-package rlbotexample.boost;
-
-import rlbot.cppinterop.RLBotDll;
-import rlbot.flat.BoostPadState;
-import rlbot.flat.FieldInfo;
-import rlbot.flat.GameTickPacket;
-import rlbotexample.vector.Vector3;
+package balliasbot.boost;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import balliasbot.math.Vector3;
+import rlbot.cppinterop.RLBotDll;
+import rlbot.flat.BoostPadState;
+import rlbot.flat.FieldInfo;
+import rlbot.flat.GameTickPacket;
 
 /**
  * Information about where boost pads are located on the field and what status they have.

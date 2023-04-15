@@ -1,31 +1,26 @@
-package rlbotexample.input.car;
+package balliasbot.data;
 
 
+import balliasbot.math.Vector3;
 import rlbot.flat.PlayerInfo;
-import rlbotexample.vector.Vector3;
 
-/**
- * The car's orientation in space, a.k.a. what direction it's pointing.
- *
- * This class is here for your convenience, it is NOT part of the framework. You can change it as much
- * as you want, or delete it.
- */
 public class CarOrientation {
 
-    /** The direction that the front of the car is facing */
-    public final Vector3 noseVector;
-
-    /** The direction the roof of the car is facing. (0, 0, 1) means the car is upright. */
-    public final Vector3 roofVector;
-
-    /** The direction that the right side of the car is facing. */
-    public final Vector3 rightVector;
+    public final Vector3 forward;
+    public final Vector3 up; // (0, 0, 1) means the car is upright.
+    public final Vector3 right;
 
     public CarOrientation(Vector3 noseVector, Vector3 roofVector) {
-
-        this.noseVector = noseVector;
-        this.roofVector = roofVector;
-        this.rightVector = noseVector.crossProduct(roofVector);
+        this.forward = noseVector;
+        this.up = roofVector;
+        this.right = noseVector.crossProduct(roofVector);
+    }
+    
+    public Vector3 dotProduct(Vector3 other) {
+    	return new Vector3(
+    			forward.dotProduct(other),
+    			up.dotProduct(other),
+    			right.dotProduct(other));
     }
 
     public static CarOrientation fromFlatbuffer(PlayerInfo playerInfo) {
@@ -50,4 +45,5 @@ public class CarOrientation {
 
         return new CarOrientation(new Vector3(noseX, noseY, noseZ), new Vector3(roofX, roofY, roofZ));
     }
+    
 }
