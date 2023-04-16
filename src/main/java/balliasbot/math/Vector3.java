@@ -19,6 +19,18 @@ public class Vector3 extends rlbot.vector.Vector3 {
         // Invert the X value so that the axes make more sense.
         this(-vec.x(), vec.y(), vec.z());
     }
+    
+    public Vector3 withX(double x) {
+    	return new Vector3(x, y, z);
+    }
+    
+    public Vector3 withY(double y) {
+    	return new Vector3(x, y, z);
+    }
+    
+    public Vector3 withZ(double z) {
+    	return new Vector3(x, y, z);
+    }
 
     @Override
 	public int toFlatbuffer(FlatBufferBuilder builder) {
@@ -106,12 +118,32 @@ public class Vector3 extends rlbot.vector.Vector3 {
         double tz = x * v.y - y * v.x;
         return new Vector3(tx, ty, tz);
     }
-
-    @Override
-    public String toString() {
-        return String.format("(%s, %s, %s)", x, y, z);
+    
+    public Vector3 offset(Vector3 direction, double offsetvalue) {
+    	return minus(direction.scaled(offsetvalue));
     }
 
+	public Vector3 clamp(Vector3 start, Vector3 end) {
+		Vector3 direction = this;
+		
+		Vector3 down = new Vector3(0, 0, -1);
+		boolean isRight = direction.dotProduct(end.crossProduct(down)) < 0;
+		boolean isLeft = direction.dotProduct(start.crossProduct(down)) > 0;
+		
+		if((end.dotProduct(start.crossProduct(down)) < 0) 
+				? (isRight && isLeft) 
+				: (isRight || isLeft)) {
+			return direction;
+		}
+		
+		if(start.dotProduct(direction) < end.dotProduct(direction)) {
+			return end;
+		}
+		
+		return start;
+	}
+    
+    
     /**
      * The correction angle is how many radians you need to rotate this vector to make it line up with the "ideal"
      * vector. This is very useful for deciding which direction to steer.
@@ -138,4 +170,10 @@ public class Vector3 extends rlbot.vector.Vector3 {
     public static double angle(Vector3 a, Vector3 b) {
         return Math.abs(a.correctionAngle(b));
     }
+    
+    @Override
+    public String toString() {
+        return String.format("(%s, %s, %s)", x, y, z);
+    }
+    
 }

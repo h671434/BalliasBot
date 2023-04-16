@@ -14,11 +14,26 @@ public class StateHandler {
 		this.bot = bot;
 	}
 	
+	private State selectState(DataPacket data) {
+		State states[] = {
+				new TakeShot(),
+				new ChaseBall()
+		};
+		
+		for(State state : states) 
+			if(state.isViable(data)) 
+				return state;
+		
+		return new ChaseBall();
+	}
+	
 	public ControlsOutput execState(DataPacket data) {		
 		if(currentState == null) {
 			currentState = selectState(data);	
 		}
 
+		renderCurrentState();
+		
 		ControlsOutput stateOutput = currentState.exec(data);
 		if(stateOutput != null) {
 			return stateOutput;
@@ -29,16 +44,8 @@ public class StateHandler {
 		return execState(data);
 	}
 	
-	
-	private State selectState(DataPacket data) {
-		State states[] = {
-			new ChaseBall()
-		};
-		
-		for(State state : states) 
-			if(state.isViable(data)) 
-				return state;
-		
-		return new ChaseBall();
+	private void renderCurrentState() {
+		bot.renderer.drawStateString(currentState.getClass().getSimpleName());
 	}
+	
 }

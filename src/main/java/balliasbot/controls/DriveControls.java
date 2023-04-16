@@ -1,7 +1,5 @@
 package balliasbot.controls;
 
-import java.awt.Color;
-
 import balliasbot.data.DataPacket;
 import balliasbot.math.Vector3;
 

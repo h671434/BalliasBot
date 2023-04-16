@@ -11,7 +11,6 @@ public class AerialControls extends ControlsOutput {
 	public static final Vector3 ANGULAR_TORQUE = new Vector3(-12.15, 8.92, -36.08);
 	public static final Vector3 ANGULAR_DRAG = new Vector3(-2.80, -1.89, -4.47); 
 	
-	
 	private DataPacket data;
 	private Vector3 localTarget;
 	private Vector3 localUp;
@@ -45,9 +44,8 @@ public class AerialControls extends ControlsOutput {
 		withThrottle(1);
 		withSteer(steer);
 		withPitch(pitch);
-		withYaw(yaw);
+		withYaw(-yaw);
 		withRoll(roll);
-		
 	}
 	
 	private static double pitchYawPD(double angle, double rate) {
@@ -68,28 +66,6 @@ public class AerialControls extends ControlsOutput {
 				* angVelNorm * deltaTime , 3) * 10;
 		
 		return roll;
-	}
-	
-	public static ControlsOutput recover(DataPacket data, Vector3 target) {
-		if (target == null) {
-			try {
-				Vector3 velocity = data.car.velocity;
-				Vector3 uprightVelocityDirection = 
-						velocity.flatten(Vector3.UP).normalized();
-				
-				target = data.car.orientation.dotProduct(uprightVelocityDirection);
-				
-			} catch (IllegalStateException e) {
-				Vector3 uprightCarToBall = 
-						data.car.carTo(data.ball.position).flatten(Vector3.UP);
-				
-				target = data.car.orientation.dotProduct(uprightCarToBall);
-			}
-		}
-		
-		Vector3 localUp = data.car.local(Vector3.UP);
-		
-		return new AerialControls(data, target, localUp);
 	}
 	
 }

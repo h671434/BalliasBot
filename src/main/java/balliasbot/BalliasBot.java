@@ -22,6 +22,7 @@ import balliasbot.controls.ControlsOutput;
 import balliasbot.data.DataPacket;
 import balliasbot.state.StateHandler;
 import balliasbot.util.PortReader;
+import balliasbot.util.SmartRenderer;
 import rlbot.Bot;
 import rlbot.ControllerState;
 import rlbot.flat.GameTickPacket;
@@ -31,10 +32,12 @@ public class BalliasBot implements Bot {
 
     private static final int DEFAULT_PORT = 17357;
     
+    public final SmartRenderer renderer;
     public final StateHandler stateHandler;
     public final int playerIndex;
 
     public BalliasBot(int playerIndex) {
+    	this.renderer = new SmartRenderer(playerIndex);
     	this.stateHandler = new StateHandler(this);
         this.playerIndex = playerIndex;
     }
@@ -110,8 +113,14 @@ public class BalliasBot implements Bot {
         BoostManager.loadGameTickPacket(packet);
         
         DataPacket dataPacket = new DataPacket(packet, playerIndex);
-
-        return stateHandler.execState(dataPacket);
+      
+        renderer.startPacket();
+      
+        ControlsOutput controls = stateHandler.execState(dataPacket);
+        
+        renderer.finishAndSendIfDifferent();
+        
+        return controls;
     }
 
     @Override

@@ -35,15 +35,17 @@ public class CarData {
     /**
      * Returns the target position relative to the local orientation.
      */
-    public Vector3 local(Vector3 carToTarget) {
+    public Vector3 local(Vector3 from, Vector3 target) {
+    	Vector3 carToTarget = target.minus(from);
+    	
     	return new Vector3(
     			orientation.forward.dotProduct(carToTarget),
     			orientation.right.dotProduct(carToTarget),
     			orientation.up.dotProduct(carToTarget));
     }
-
-    public Vector3 local(Vector3 from, Vector3 target) {
-    	return local(target.minus(from));
+    
+    public Vector3 local(Vector3 target) {
+    	return local(position, target);
     }
     
 }
