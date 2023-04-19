@@ -5,6 +5,7 @@ import balliasbot.math.Vec3;
 import rlbot.flat.PlayerInfo;
 
 public class Car {
+	
     public final Vec3 position;
     public final Vec3 velocity;
     public final Mat3x3 orientation;

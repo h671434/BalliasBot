@@ -10,12 +10,6 @@ import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
 import rlbot.flat.GameTickPacket;
 
-/**
- * Information about where boost pads are located on the field and what status they have.
- *
- * This class is here for your convenience, it is NOT part of the framework. You can change it as much
- * as you want, or delete it.
- */
 public class BoostManager {
 
     private static final List<BoostPad> orderedBoosts = new ArrayList<>();

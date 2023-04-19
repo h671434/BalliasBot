@@ -4,12 +4,6 @@ package balliasbot.data;
 import balliasbot.math.Vec3;
 import rlbot.flat.Touch;
 
-/**
- * Basic information about the ball's latest touch.
- *
- * This class is here for your convenience, it is NOT part of the framework. You can change it as much
- * as you want, or delete it.
- */
 public class BallTouch {
 	
 	public final Vec3 position;

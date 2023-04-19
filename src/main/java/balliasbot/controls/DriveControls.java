@@ -1,7 +1,6 @@
 package balliasbot.controls;
 
 import balliasbot.data.Car;
-import balliasbot.data.DataPacket;
 import balliasbot.math.Vec3;
 
 public class DriveControls extends ControlsOutput {

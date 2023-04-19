@@ -1,11 +1,7 @@
 package balliasbot.state;
 
-import balliasbot.controls.AerialControls;
 import balliasbot.controls.ControlsOutput;
-import balliasbot.controls.DriveControls;
 import balliasbot.data.DataPacket;
-import balliasbot.maneuver.Maneuver;
-import balliasbot.math.Vec3;
 
 public class ChaseBall extends GoTo {
 	

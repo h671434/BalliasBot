@@ -2,7 +2,6 @@ package balliasbot.state;
 
 import balliasbot.controls.ControlsOutput;
 import balliasbot.data.DataPacket;
-import balliasbot.maneuver.Maneuver;
 
 public abstract class State {
 	

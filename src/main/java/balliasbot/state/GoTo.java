@@ -3,7 +3,6 @@ package balliasbot.state;
 import balliasbot.controls.ControlsOutput;
 import balliasbot.controls.DriveControls;
 import balliasbot.data.DataPacket;
-import balliasbot.maneuver.Maneuver;
 import balliasbot.math.Vec3;
 
 public class GoTo extends State {
