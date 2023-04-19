@@ -2,34 +2,34 @@ package balliasbot.math;
 
 import com.google.flatbuffers.FlatBufferBuilder;
 
-public class Vector3 extends rlbot.vector.Vector3 {
+public class Vec3 extends rlbot.vector.Vector3 {
 
-	public static final Vector3 ZERO = new Vector3(0, 0, 0);
-	public static final Vector3 UP = new Vector3(0, 0, 1);
+	public static final Vec3 ZERO = new Vec3(0, 0, 0);
+	public static final Vec3 UP = new Vec3(0, 0, 1);
 	
-	public Vector3(double x, double y, double z) {
+	public Vec3(double x, double y, double z) {
         super((float) x, (float) y, (float) z);
     }
 
-    public Vector3() {
+    public Vec3() {
         this(0, 0, 0);
     }
 
-    public Vector3(rlbot.flat.Vector3 vec) {
+    public Vec3(rlbot.flat.Vector3 vec) {
         // Invert the X value so that the axes make more sense.
         this(-vec.x(), vec.y(), vec.z());
     }
     
-    public Vector3 withX(double x) {
-    	return new Vector3(x, y, z);
+    public Vec3 withX(double x) {
+    	return new Vec3(x, y, z);
     }
     
-    public Vector3 withY(double y) {
-    	return new Vector3(x, y, z);
+    public Vec3 withY(double y) {
+    	return new Vec3(x, y, z);
     }
     
-    public Vector3 withZ(double z) {
-    	return new Vector3(x, y, z);
+    public Vec3 withZ(double z) {
+    	return new Vec3(x, y, z);
     }
 
     @Override
@@ -38,22 +38,22 @@ public class Vector3 extends rlbot.vector.Vector3 {
         return rlbot.flat.Vector3.createVector3(builder, -x, y, z);
     }
 
-    public Vector3 plus(Vector3 other) {
-        return new Vector3(x + other.x, y + other.y, z + other.z);
+    public Vec3 plus(Vec3 other) {
+        return new Vec3(x + other.x, y + other.y, z + other.z);
     }
 
-    public Vector3 minus(Vector3 other) {
-        return new Vector3(x - other.x, y - other.y, z - other.z);
+    public Vec3 minus(Vec3 other) {
+        return new Vec3(x - other.x, y - other.y, z - other.z);
     }
 
-    public Vector3 scaled(double scale) {
-        return new Vector3(x * scale, y * scale, z * scale);
+    public Vec3 scaled(double scale) {
+        return new Vec3(x * scale, y * scale, z * scale);
     }
 
     /**
      * If magnitude is negative, we will return a vector facing the opposite direction.
      */
-    public Vector3 scaledToMagnitude(double magnitude) {
+    public Vec3 scaledToMagnitude(double magnitude) {
         if (isZero()) {
             throw new IllegalStateException("Cannot scale up a vector with length zero!");
         }
@@ -63,7 +63,7 @@ public class Vector3 extends rlbot.vector.Vector3 {
         return scaled(scaleRequired);
     }
 
-    public double distance(Vector3 other) {
+    public double distance(Vec3 other) {
         double xDiff = x - other.x;
         double yDiff = y - other.y;
         double zDiff = z - other.z;
@@ -79,7 +79,7 @@ public class Vector3 extends rlbot.vector.Vector3 {
         return x * x + y * y + z * z;
     }
 
-    public Vector3 normalized() {
+    public Vec3 normalized() {
 
         if (isZero()) {
             throw new IllegalStateException("Cannot normalize a vector with length zero!");
@@ -87,7 +87,7 @@ public class Vector3 extends rlbot.vector.Vector3 {
         return this.scaled(1 / magnitude());
     }
 
-    public double dotProduct(Vector3 other) {
+    public double dotProduct(Vec3 other) {
         return x * other.x + y * other.y + z * other.z;
     }
 
@@ -95,38 +95,38 @@ public class Vector3 extends rlbot.vector.Vector3 {
         return x == 0 && y == 0 && z == 0;
     }
 
-    public Vector3 flatten() {
-        return new Vector3(x, y, 0);
+    public Vec3 flatten() {
+        return new Vec3(x, y, 0);
     }
     
-	public Vector3 flatten(Vector3 up) {
+	public Vec3 flatten(Vec3 up) {
 		up = up.normalized();
 		
 		return minus(up.scaled(dotProduct(up)));
 	}
 
-    public double angle(Vector3 v) {
+    public double angle(Vec3 v) {
         double mag2 = magnitudeSquared();
         double vmag2 = v.magnitudeSquared();
         double dot = dotProduct(v);
         return Math.acos(dot / Math.sqrt(mag2 * vmag2));
     }
 
-    public Vector3 crossProduct(Vector3 v) {
+    public Vec3 crossProduct(Vec3 v) {
         double tx = y * v.z - z * v.y;
         double ty = z * v.x - x * v.z;
         double tz = x * v.y - y * v.x;
-        return new Vector3(tx, ty, tz);
+        return new Vec3(tx, ty, tz);
     }
     
-    public Vector3 offset(Vector3 direction, double offsetvalue) {
+    public Vec3 offset(Vec3 direction, double offsetvalue) {
     	return minus(direction.scaled(offsetvalue));
     }
 
-	public Vector3 clamp(Vector3 start, Vector3 end) {
-		Vector3 direction = this;
+	public Vec3 clamp(Vec3 start, Vec3 end) {
+		Vec3 direction = this;
 		
-		Vector3 down = new Vector3(0, 0, -1);
+		Vec3 down = new Vec3(0, 0, -1);
 		boolean isRight = direction.dotProduct(end.crossProduct(down)) < 0;
 		boolean isLeft = direction.dotProduct(start.crossProduct(down)) > 0;
 		
@@ -148,7 +148,7 @@ public class Vector3 extends rlbot.vector.Vector3 {
      * The correction angle is how many radians you need to rotate this vector to make it line up with the "ideal"
      * vector. This is very useful for deciding which direction to steer.
      */
-    public double correctionAngle(Vector3 ideal) {
+    public double correctionAngle(Vec3 ideal) {
         double currentRad = Math.atan2(y, x);
         double idealRad = Math.atan2(ideal.y, ideal.x);
 
@@ -167,7 +167,7 @@ public class Vector3 extends rlbot.vector.Vector3 {
     /**
      * Will always return a positive value <= Math.PI
      */
-    public static double angle(Vector3 a, Vector3 b) {
+    public static double angle(Vec3 a, Vec3 b) {
         return Math.abs(a.correctionAngle(b));
     }
     

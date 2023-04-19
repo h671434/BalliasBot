@@ -1,16 +1,17 @@
 package balliasbot.controls;
 
+import balliasbot.data.Car;
 import balliasbot.data.DataPacket;
-import balliasbot.math.Vector3;
+import balliasbot.math.Vec3;
 
 public class DriveControls extends ControlsOutput {
 
-	private DataPacket data;
-	private	Vector3 target;
+	private Car car;
+	private	Vec3 target;
 	private double targetSpeed;
 	
-	public DriveControls(DataPacket data, Vector3 target, double targetSpeed) {
-		this.data = data;
+	public DriveControls(Car car, Vec3 target, double targetSpeed) {
+		this.car = car;
 		this.target = target;
 		this.targetSpeed = targetSpeed;
 		
@@ -23,11 +24,11 @@ public class DriveControls extends ControlsOutput {
 	}
 	
 	private void initSpeedControls() {
-		Vector3 carVelocity =  data.car.velocity;
-        Vector3 carToTarget = target.minus(data.car.position);
-        Vector3 carToTargetNorm = carToTarget.normalized();
+		Vec3 carVelocity =  car.velocity;
+        Vec3 carToTarget = car.getVectorTo(target);
+        Vec3 direction = carToTarget.normalized();
         
-        double currentSpeed = carVelocity.dotProduct(carToTargetNorm);
+        double currentSpeed = carVelocity.dotProduct(direction);
         
         if (currentSpeed < targetSpeed) {
             withThrottle(1.0f);
@@ -44,12 +45,12 @@ public class DriveControls extends ControlsOutput {
 	}
 
 	private void initSteerControls() {
-        Vector3 localTarget = data.car.local(target, data.car.position);
+        Vec3 localTarget = car.getLocalCoordinates(target);
         
-		if(data.car.hasWheelContact && !data.car.isUpright) {
+		if(car.hasWheelContact && !car.isUpright) {
 			withSteer(localTarget.normalized().x * 5);
 		} else {
-			withSteer(-localTarget.normalized().y * 5);
+			withSteer(localTarget.normalized().y * 5);
 		}
 			
 	}

@@ -5,9 +5,9 @@ import java.awt.Point;
 
 import com.google.flatbuffers.FlatBufferBuilder;
 
-import balliasbot.data.CarData;
+import balliasbot.data.Car;
 import balliasbot.data.DataPacket;
-import balliasbot.math.Vector3;
+import balliasbot.math.Vec3;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.cppinterop.RLBotInterfaceException;
 import rlbot.flat.BallPrediction;
@@ -35,44 +35,44 @@ public class SmartRenderer extends Renderer{
         }
     }
 
-    public void drawCube(Color color, Vector3 center, double size) {
+    public void drawCube(Color color, Vec3 center, double size) {
         double r = size / 2;
 
-        drawLine3d(color, center.plus(new Vector3(-r, -r, -r)), center.plus(new Vector3(-r, -r, r)));
-        drawLine3d(color, center.plus(new Vector3(r, -r, -r)), center.plus(new Vector3(r, -r, r)));
-        drawLine3d(color, center.plus(new Vector3(-r, r, -r)), center.plus(new Vector3(-r, r, r)));
-        drawLine3d(color, center.plus(new Vector3(r, r, -r)), center.plus(new Vector3(r, r, r)));
+        drawLine3d(color, center.plus(new Vec3(-r, -r, -r)), center.plus(new Vec3(-r, -r, r)));
+        drawLine3d(color, center.plus(new Vec3(r, -r, -r)), center.plus(new Vec3(r, -r, r)));
+        drawLine3d(color, center.plus(new Vec3(-r, r, -r)), center.plus(new Vec3(-r, r, r)));
+        drawLine3d(color, center.plus(new Vec3(r, r, -r)), center.plus(new Vec3(r, r, r)));
 
-        drawLine3d(color, center.plus(new Vector3(-r, -r, -r)), center.plus(new Vector3(-r, r, -r)));
-        drawLine3d(color, center.plus(new Vector3(r, -r, -r)), center.plus(new Vector3(r, r, -r)));
-        drawLine3d(color, center.plus(new Vector3(-r, -r, r)), center.plus(new Vector3(-r, r, r)));
-        drawLine3d(color, center.plus(new Vector3(r, -r, r)), center.plus(new Vector3(r, r, r)));
+        drawLine3d(color, center.plus(new Vec3(-r, -r, -r)), center.plus(new Vec3(-r, r, -r)));
+        drawLine3d(color, center.plus(new Vec3(r, -r, -r)), center.plus(new Vec3(r, r, -r)));
+        drawLine3d(color, center.plus(new Vec3(-r, -r, r)), center.plus(new Vec3(-r, r, r)));
+        drawLine3d(color, center.plus(new Vec3(r, -r, r)), center.plus(new Vec3(r, r, r)));
 
-        drawLine3d(color, center.plus(new Vector3(-r, -r, -r)), center.plus(new Vector3(r, -r, -r)));
-        drawLine3d(color, center.plus(new Vector3(-r, -r, r)), center.plus(new Vector3(r, -r, r)));
-        drawLine3d(color, center.plus(new Vector3(-r, r, -r)), center.plus(new Vector3(r, r, -r)));
-        drawLine3d(color, center.plus(new Vector3(-r, r, r)), center.plus(new Vector3(r, r, r)));
+        drawLine3d(color, center.plus(new Vec3(-r, -r, -r)), center.plus(new Vec3(r, -r, -r)));
+        drawLine3d(color, center.plus(new Vec3(-r, -r, r)), center.plus(new Vec3(r, -r, r)));
+        drawLine3d(color, center.plus(new Vec3(-r, r, -r)), center.plus(new Vec3(r, r, -r)));
+        drawLine3d(color, center.plus(new Vec3(-r, r, r)), center.plus(new Vec3(r, r, r)));
     }
 
 
-    public void drawCross(Color color, Vector3 center, double size) {
+    public void drawCross(Color color, Vec3 center, double size) {
         double r = size / 2;
 
-        drawLine3d(color, center.plus(new Vector3(-r, 0, 0)), center.plus(new Vector3(r, 0, 0)));
-        drawLine3d(color, center.plus(new Vector3(0, -r, 0)), center.plus(new Vector3(0, r, 0)));
-        drawLine3d(color, center.plus(new Vector3(0, 0, -r)), center.plus(new Vector3(0, 0, r)));
+        drawLine3d(color, center.plus(new Vec3(-r, 0, 0)), center.plus(new Vec3(r, 0, 0)));
+        drawLine3d(color, center.plus(new Vec3(0, -r, 0)), center.plus(new Vec3(0, r, 0)));
+        drawLine3d(color, center.plus(new Vec3(0, 0, -r)), center.plus(new Vec3(0, 0, r)));
     }
 
     public void drawBallPrediction(Color color, double duration) {
         try {
             BallPrediction ballPrediction = RLBotDll.getBallPrediction();
-            Vector3 previousLocation = null;
+            Vec3 previousLocation = null;
             
             int length = (int) Math.min(ballPrediction.slicesLength(), duration);
             
             for (int i = 0; i < length; i += 4) {
                 PredictionSlice slice = ballPrediction.slices(i);
-                Vector3 location = new Vector3(slice.physics().location());
+                Vec3 location = new Vec3(slice.physics().location());
                 
                 if (previousLocation != null) {
                     drawLine3d(color, previousLocation, location);
@@ -87,7 +87,7 @@ public class SmartRenderer extends Renderer{
     public void drawDebugLines(DataPacket data, boolean goLeft) {
 
     	DataPacket input = data;
-    	CarData myCar = data.car;
+    	Car myCar = data.car;
 
         // Draw a line from the car to the ball
        drawLine3d(Color.LIGHT_GRAY, myCar.position, input.ball.position);

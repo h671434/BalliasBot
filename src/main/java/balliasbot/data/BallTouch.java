@@ -1,7 +1,7 @@
 package balliasbot.data;
 
 
-import balliasbot.math.Vector3;
+import balliasbot.math.Vec3;
 import rlbot.flat.Touch;
 
 /**
@@ -11,19 +11,21 @@ import rlbot.flat.Touch;
  * as you want, or delete it.
  */
 public class BallTouch {
-	public final Vector3 position;
-	public final Vector3 normal;
+	
+	public final Vec3 position;
+	public final Vec3 normal;
 	public final String playerName;
 	public final float gameSeconds;
 	public final int playerIndex;
 	public final int team;
 
 	public BallTouch(final Touch touch) {
-		this.position = new Vector3(touch.location());
-		this.normal = new Vector3(touch.normal());
+		this.position = new Vec3(touch.location());
+		this.normal = new Vec3(touch.normal());
 		this.playerName = touch.playerName();
 		this.gameSeconds = touch.gameSeconds();
 		this.playerIndex = touch.playerIndex();
 		this.team = touch.team();
 	}
+	
 }

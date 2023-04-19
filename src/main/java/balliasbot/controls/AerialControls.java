@@ -1,21 +1,21 @@
 package balliasbot.controls;
 
-import balliasbot.data.CarOrientation;
 import balliasbot.data.DataPacket;
-import balliasbot.math.Vector3;
+import balliasbot.math.Mat3x3;
+import balliasbot.math.Vec3;
 
 public class AerialControls extends ControlsOutput {
 
 	public static final double MAX_ANGULAR_VELOCITY = 5.5;
-	public static final Vector3 ANGULAR_ACCELERATION = new Vector3(9.11, 12.46, 37.34);
-	public static final Vector3 ANGULAR_TORQUE = new Vector3(-12.15, 8.92, -36.08);
-	public static final Vector3 ANGULAR_DRAG = new Vector3(-2.80, -1.89, -4.47); 
+	public static final Vec3 ANGULAR_ACCELERATION = new Vec3(9.11, 12.46, 37.34);
+	public static final Vec3 ANGULAR_TORQUE = new Vec3(-12.15, 8.92, -36.08);
+	public static final Vec3 ANGULAR_DRAG = new Vec3(-2.80, -1.89, -4.47); 
 	
 	private DataPacket data;
-	private Vector3 localTarget;
-	private Vector3 localUp;
+	private Vec3 localTarget;
+	private Vec3 localUp;
 	
-	public AerialControls(DataPacket data,  Vector3 localTarget, Vector3 localUp) {
+	public AerialControls(DataPacket data,  Vec3 localTarget, Vec3 localUp) {
 		this.data = data;
 		this.localTarget = localTarget;
 		this.localUp = localUp;
@@ -27,11 +27,11 @@ public class AerialControls extends ControlsOutput {
 	}
 	
 	private void align() {
-		CarOrientation orientation = data.car.orientation;
-		Vector3 angularVelocity = data.car.angularVelocity;
-		Vector3 localAngVel = orientation.dotProduct(angularVelocity);
+		Mat3x3 orientation = data.car.orientation;
+		Vec3 angularVelocity = data.car.angularVelocity;
+		Vec3 localAngVel = orientation.dotProduct(angularVelocity);
 		
-		Vector3 targetAngles = new Vector3(
+		Vec3 targetAngles = new Vec3(
 				Math.atan2(localTarget.z, localTarget.x),
 				Math.atan2(localTarget.y, localTarget.x),
 				Math.atan2(localUp.x, localUp.z));

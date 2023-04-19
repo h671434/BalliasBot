@@ -16,7 +16,6 @@ public class StateHandler {
 	
 	private State selectState(DataPacket data) {
 		State states[] = {
-				new TakeShot(),
 				new ChaseBall()
 		};
 		
