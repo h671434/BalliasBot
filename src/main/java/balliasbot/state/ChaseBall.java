@@ -16,7 +16,7 @@ public class ChaseBall extends GoTo {
 	
 	@Override
 	public ControlsOutput exec(DataPacket data) {
-		if(limitStateDuration(data.elapsedSeconds)) {
+		if(limitStateDuration(data.currentTime)) {
 			return null;
 		}
 		

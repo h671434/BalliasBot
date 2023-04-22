@@ -2,6 +2,9 @@ package balliasbot.math;
 
 import com.google.flatbuffers.FlatBufferBuilder;
 
+/**
+ * A 3-dimensional vector or point.
+ */
 public class Vec3 extends rlbot.vector.Vector3 {
 
 	public static final Vec3 ZERO = new Vec3(0, 0, 0);
@@ -9,10 +12,6 @@ public class Vec3 extends rlbot.vector.Vector3 {
 	
 	public Vec3(double x, double y, double z) {
         super((float) x, (float) y, (float) z);
-    }
-
-    public Vec3() {
-        this(0, 0, 0);
     }
 
     public Vec3(rlbot.flat.Vector3 vec) {
@@ -50,9 +49,6 @@ public class Vec3 extends rlbot.vector.Vector3 {
         return new Vec3(x * scale, y * scale, z * scale);
     }
 
-    /**
-     * If magnitude is negative, we will return a vector facing the opposite direction.
-     */
     public Vec3 scaledToMagnitude(double magnitude) {
         if (isZero()) {
             throw new IllegalStateException("Cannot scale up a vector with length zero!");
@@ -142,34 +138,8 @@ public class Vec3 extends rlbot.vector.Vector3 {
 		
 		return start;
 	}
-    
-    
-    /**
-     * The correction angle is how many radians you need to rotate this vector to make it line up with the "ideal"
-     * vector. This is very useful for deciding which direction to steer.
-     */
-    public double correctionAngle(Vec3 ideal) {
-        double currentRad = Math.atan2(y, x);
-        double idealRad = Math.atan2(ideal.y, ideal.x);
+	
 
-        if (Math.abs(currentRad - idealRad) > Math.PI) {
-            if (currentRad < 0) {
-                currentRad += Math.PI * 2;
-            }
-            if (idealRad < 0) {
-                idealRad += Math.PI * 2;
-            }
-        }
-
-        return idealRad - currentRad;
-    }
-
-    /**
-     * Will always return a positive value <= Math.PI
-     */
-    public static double angle(Vec3 a, Vec3 b) {
-        return Math.abs(a.correctionAngle(b));
-    }
     
     @Override
     public String toString() {

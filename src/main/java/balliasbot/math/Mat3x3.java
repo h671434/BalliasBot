@@ -1,5 +1,8 @@
 package balliasbot.math;
 
+/**
+ * A 3x3 rotation matrix.
+ */
 public class Mat3x3 {
 
     public final Vec3 forward;

@@ -24,7 +24,7 @@ public class DriveControls extends ControlsOutput {
 	
 	private void initSpeedControls() {
 		Vec3 carVelocity =  car.velocity;
-        Vec3 carToTarget = car.getVectorTo(target);
+        Vec3 carToTarget = car.positionToPoint(target);
         Vec3 direction = carToTarget.normalized();
         
         double currentSpeed = carVelocity.dotProduct(direction);
@@ -44,7 +44,7 @@ public class DriveControls extends ControlsOutput {
 	}
 
 	private void initSteerControls() {
-        Vec3 localTarget = car.getLocalCoordinates(target);
+        Vec3 localTarget = car.inLocalCoordinates(target);
         
 		if(car.hasWheelContact && !car.isUpright) {
 			withSteer(localTarget.normalized().x * 5);

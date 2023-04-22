@@ -15,16 +15,16 @@ public class DataPacket {
     public final Field field;
     public final int team;
     public final int playerIndex;
-    public final double elapsedSeconds;
+    public final double currentTime;
 
     public DataPacket(GameTickPacket request, int playerIndex) {
     	this.playerIndex = playerIndex;
-        this.elapsedSeconds = request.gameInfo().secondsElapsed();
-    	this.ball = new Ball(request.ball(), elapsedSeconds);
+        this.currentTime = request.gameInfo().secondsElapsed();
+    	this.ball = new Ball(request.ball(), currentTime);
     	
     	this.allCars = new ArrayList<>();
         for (int i = 0; i < request.playersLength(); i++) {
-            allCars.add(new Car(request.players(i), elapsedSeconds));
+            allCars.add(new Car(request.players(i), currentTime));
         }
         
         this.car = allCars.get(playerIndex);

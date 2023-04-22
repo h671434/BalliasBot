@@ -1,6 +1,8 @@
 package balliasbot.data;
 
 
+import java.util.List;
+
 import balliasbot.math.Vec3;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.cppinterop.RLBotInterfaceException;
@@ -8,61 +10,48 @@ import rlbot.flat.BallInfo;
 import rlbot.flat.BallPrediction;
 import rlbot.flat.Physics;
 
-public class Ball {
+public class Ball extends KinematicInstant {
 	
-    public final Vec3 position;
-    public final Vec3 velocity;
-    public final Vec3 spin;
     public final BallTouch latestTouch;
     public final boolean hasBeenTouched;
-    public final double time;
 
     public Ball(final BallInfo ball, double time) {
-        this.position = new Vec3(ball.physics().location());
-        this.velocity = new Vec3(ball.physics().velocity());
-        this.spin = new Vec3(ball.physics().angularVelocity());
+    	super(ball.physics(), time);
         this.hasBeenTouched = ball.latestTouch() != null;
-        this.latestTouch = this.hasBeenTouched ? new BallTouch(ball.latestTouch()) : null;
-        this.time = time;
+        this.latestTouch = hasBeenTouched ? new BallTouch(ball.latestTouch()) : null;
     }
     
-    public Ball(Vec3 position, Vec3 velocity, Vec3 spin, BallTouch latestTouch,
-    		boolean hasBeenTouched, double time) {
-    	this.position = position;
-    	this.velocity = velocity;
-    	this.spin = spin;
-    	this.latestTouch = latestTouch;
-    	this.hasBeenTouched = hasBeenTouched;
-    	this.time = time;
+    public Ball(KinematicInstant instant, boolean hasBeenTouched, BallTouch latestTouch) {
+    	super(instant);
+        this.hasBeenTouched = hasBeenTouched;
+        this.latestTouch = latestTouch;
     }
     
     public static Ball nextReachable(DataPacket data, int startTime) {
+    	BallPrediction predictedBallPath = null;
 		try {
-			BallPrediction predictedBallPath = RLBotDll.getBallPrediction();
+			predictedBallPath = RLBotDll.getBallPrediction();
+		} catch (RLBotInterfaceException e) {
+    	   return null;
+       	}
+		
+		for (int i = startTime; i < 6 * 60; i += 6) {
+			KinematicInstant ballPhysics = new KinematicInstant(
+					predictedBallPath.slices(i).physics(),
+					data.currentTime + (i / 60.0));
+			Ball ball = new Ball(
+					ballPhysics,
+					data.ball.hasBeenTouched,
+					data.ball.latestTouch);
 			
-			for (int i = startTime; i < 6 * 60; i += 6) {
-				Physics ballPhysics = predictedBallPath.slices(i).physics();
-				Ball ball = new Ball(
-						new Vec3(ballPhysics.location()),
-						new Vec3(ballPhysics.velocity()),
-						new Vec3(ballPhysics.angularVelocity()),
-						data.ball.latestTouch,
-						data.ball.hasBeenTouched,
-						data.elapsedSeconds + (i / 60.0));
-				
-				if(ball.isReachable(data.car) && ball.position.z < 200) {
-					return ball;
-				}
-				
-				// Return null if any other car is closer
-				for(Car anyCar : data.allCars) {
-					if (ball.isReachable(anyCar)) {
-						return null;
-					}
-				}
+			if(ball.isReachable(data.car) && ball.position.z < 200) {
+				return ball;
 			}
-       } catch (RLBotInterfaceException ignored) { }
-
+			if(ball.isReachableForOpponent(data.allCars, data.team)) {
+				return null;
+			}
+		}
+		
 		return null;
 	}
     
@@ -77,6 +66,16 @@ public class Ball {
 		double travelTime = dist / averageSpeed;
 		
 		return (travelTime < time);
+	}
+	
+	public boolean isReachableForOpponent(List<Car> allCars, int ownTeam) {
+		for(Car anyCar : allCars) {
+			if (anyCar.team != ownTeam && isReachable(anyCar)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
     
 }

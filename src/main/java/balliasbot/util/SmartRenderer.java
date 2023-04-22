@@ -99,7 +99,7 @@ public class SmartRenderer extends Renderer{
 
         drawString3d(goLeft ? "left" : "right", Color.WHITE, myCar.position, 2, 2);
 
-        drawBallPrediction(Color.CYAN, data.elapsedSeconds + 3);
+        drawBallPrediction(Color.CYAN, data.currentTime + 3);
     }
     
     public void drawStateString(String state) {	
