@@ -1,13 +1,13 @@
 package balliasbot.state;
 
 import balliasbot.controls.ControlsOutput;
+import balliasbot.controls.DriveControls;
 import balliasbot.data.DataPacket;
+import balliasbot.math.Vec3;
 
-public class ChaseBall extends GoTo {
+public class ChaseBall extends State {
 	
 	private double startTime = -1;
-	
-	private double lastDodgeTime = 0;
 	
 	@Override
 	public boolean isViable(DataPacket data) {
@@ -20,10 +20,10 @@ public class ChaseBall extends GoTo {
 			return null;
 		}
 		
-		target = data.ball.position;
-		targetSpeed = 1200;
+		Vec3 targetPosition = data.ball.position;
+		double targetSpeed = 1200;
 		
-		return super.exec(data);
+		return new DriveControls(data.car, targetPosition, targetSpeed) ;
 	}
 	
 	private boolean limitStateDuration(double currentTime) {

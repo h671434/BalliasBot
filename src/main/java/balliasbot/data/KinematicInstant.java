@@ -18,7 +18,7 @@ public class KinematicInstant {
         this.orientation = Mat3x3.eulerToRotation(
                 physics.rotation().pitch(),
                 physics.rotation().yaw(),
-                physics.rotation().roll());;
+                physics.rotation().roll());
         this.angularVelocity = new Vec3(physics.angularVelocity());
         this.time = time;
 	}

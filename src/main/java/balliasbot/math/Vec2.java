@@ -38,8 +38,6 @@ public class Vec2 {
     public boolean isZero() {
         return x == 0 && y == 0;
     }
-
-    
     
     @Override
     public String toString() {

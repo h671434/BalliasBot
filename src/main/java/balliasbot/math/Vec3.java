@@ -138,8 +138,6 @@ public class Vec3 extends rlbot.vector.Vector3 {
 		
 		return start;
 	}
-	
-
     
     @Override
     public String toString() {
