@@ -1,14 +1,14 @@
 package balliasbot.boost;
 
-import balliasbot.math.Vec3;
+import balliasbot.math.Vector3;
 
 public class BoostPad {
 
-    private final Vec3 location;
+    private final Vector3 location;
     private final boolean isFullBoost;
     private boolean isActive;
 
-    public BoostPad(Vec3 location, boolean isFullBoost) {
+    public BoostPad(Vector3 location, boolean isFullBoost) {
         this.location = location;
         this.isFullBoost = isFullBoost;
     }
@@ -17,7 +17,7 @@ public class BoostPad {
         isActive = active;
     }
 
-    public Vec3 getLocation() {
+    public Vector3 getLocation() {
         return location;
     }
 

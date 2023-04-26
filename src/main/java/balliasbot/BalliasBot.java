@@ -112,7 +112,7 @@ public class BalliasBot implements Bot {
 
         BoostManager.loadGameTickPacket(packet);
         
-        DataPacket dataPacket = new DataPacket(packet, playerIndex);
+        DataPacket dataPacket = new DataPacket(this, packet, playerIndex);
       
         renderer.startPacket();
       

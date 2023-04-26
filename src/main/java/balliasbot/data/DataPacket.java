@@ -3,12 +3,14 @@ package balliasbot.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import balliasbot.BalliasBot;
 import rlbot.flat.GameTickPacket;
 
 public class DataPacket {
 
 	public static final double DELTA_TIME = 1 / 120; // gameticks per second
 	
+	public final BalliasBot bot;
     public final Car car;
     public final List<Car> allCars;
     public final Ball ball;
@@ -17,7 +19,8 @@ public class DataPacket {
     public final int playerIndex;
     public final double currentTime;
 
-    public DataPacket(GameTickPacket request, int playerIndex) {
+    public DataPacket(BalliasBot bot, GameTickPacket request, int playerIndex) {
+    	this.bot = bot;
     	this.playerIndex = playerIndex;
         this.currentTime = request.gameInfo().secondsElapsed();
     	this.ball = new Ball(request.ball(), currentTime);

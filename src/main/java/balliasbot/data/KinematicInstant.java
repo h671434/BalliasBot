@@ -1,30 +1,30 @@
 package balliasbot.data;
 
-import balliasbot.math.Mat3x3;
-import balliasbot.math.Vec3;
+import balliasbot.math.RotationMatrix;
+import balliasbot.math.Vector3;
 import rlbot.flat.Physics;
 
 public class KinematicInstant {
 
-	public final Vec3 position;
-	public final Mat3x3 orientation;
-	public final Vec3 velocity;
-	public final Vec3 angularVelocity;
+	public final Vector3 position;
+	public final RotationMatrix orientation;
+	public final Vector3 velocity;
+	public final Vector3 angularVelocity;
 	public final double time;
 	
 	public KinematicInstant(Physics physics, double time) {
-        this.position = new Vec3(physics.location());
-        this.velocity = new Vec3(physics.velocity());
-        this.orientation = Mat3x3.eulerToRotation(
+        this.position = new Vector3(physics.location());
+        this.velocity = new Vector3(physics.velocity());
+        this.orientation = RotationMatrix.eulerToRotation(
                 physics.rotation().pitch(),
                 physics.rotation().yaw(),
                 physics.rotation().roll());
-        this.angularVelocity = new Vec3(physics.angularVelocity());
+        this.angularVelocity = new Vector3(physics.angularVelocity());
         this.time = time;
 	}
 	
-	public KinematicInstant(Vec3 position, Mat3x3 orientation, Vec3 velocity, 
-			Vec3 angularVelocity, double time) {
+	public KinematicInstant(Vector3 position, RotationMatrix orientation, Vector3 velocity, 
+			Vector3 angularVelocity, double time) {
 		this.position = position;
 		this.orientation = orientation;
 		this.velocity = velocity;
@@ -40,14 +40,22 @@ public class KinematicInstant {
 				instant.time);
 	}
 	
-	public Vec3 positionToPoint(Vec3 vec) {
+	public Vector3 pointingTo(Vector3 vec) {
     	return vec.minus(position);
     }
     
-    public Vec3 inLocalCoordinates(Vec3 vec) {
-    	Vec3 direction = positionToPoint(vec);
+	public Vector3 pointingTo(KinematicInstant other) {
+    	return pointingTo(other.position);
+    }
+	
+    public Vector3 inLocalCoordinates(Vector3 vec) {
+    	Vector3 direction = pointingTo(vec);
     	
     	return orientation.local(direction);
+    }
+    
+    public Vector3 inLocalCoordinates(KinematicInstant other) {
+    	return inLocalCoordinates(other.position);
     }
     
     public double speed() {

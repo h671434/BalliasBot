@@ -1,9 +1,11 @@
 package balliasbot.state;
 
+import java.awt.Color;
+
 import balliasbot.controls.ControlsOutput;
 import balliasbot.controls.DriveControls;
 import balliasbot.data.DataPacket;
-import balliasbot.math.Vec3;
+import balliasbot.math.Vector3;
 
 public class ChaseBall extends State {
 	
@@ -20,8 +22,10 @@ public class ChaseBall extends State {
 			return null;
 		}
 		
-		Vec3 targetPosition = data.ball.position;
-		double targetSpeed = 1200;
+		Vector3 targetPosition = data.ball.position;
+		double targetSpeed = 1400;
+		
+		data.bot.renderer.drawLine3d(Color.RED, data.car.position, targetPosition);
 		
 		return new DriveControls(data.car, targetPosition, targetSpeed) ;
 	}

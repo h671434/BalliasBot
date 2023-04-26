@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import balliasbot.math.Vec3;
+import balliasbot.math.Vector3;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
@@ -34,7 +34,7 @@ public class BoostManager {
 
             for (int i = 0; i < fieldInfo.boostPadsLength(); i++) {
                 rlbot.flat.BoostPad flatPad = fieldInfo.boostPads(i);
-                BoostPad ourPad = new BoostPad(new Vec3(flatPad.location()), flatPad.isFullBoost());
+                BoostPad ourPad = new BoostPad(new Vector3(flatPad.location()), flatPad.isFullBoost());
                 orderedBoosts.add(ourPad);
                 if (ourPad.isFullBoost()) {
                     fullBoosts.add(ourPad);

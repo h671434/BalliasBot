@@ -3,7 +3,7 @@ package balliasbot.data;
 
 import java.util.List;
 
-import balliasbot.math.Vec3;
+import balliasbot.math.Vector3;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.cppinterop.RLBotInterfaceException;
 import rlbot.flat.BallInfo;
