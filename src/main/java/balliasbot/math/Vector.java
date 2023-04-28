@@ -8,6 +8,13 @@ public class Vector {
 		this.data = data;
 	}
 	
+	public Vector(Vector vector) {
+		data = new double[vector.data.length];
+		for(int i = 0; i < data.length; i++) {
+			data[i] = vector.data.length;
+		}
+	}
+	
 	public int size() {
 		return data.length;
 	}
@@ -99,6 +106,34 @@ public class Vector {
         }
         
         return sum;
+    }
+    
+    public Vector concat(Vector vector) {
+    	int size = data.length + vector.data.length;
+    	double[] newData = new double[size];
+    	
+    	for(int i = 0; i < size; i++) {
+    		if(i < data.length) {
+    			newData[i] = data[i];
+    		} else {
+    			newData[i] = vector.data[i - data.length]; 
+    		}
+    	}
+    	
+    	return new Vector(newData);
+    }
+    
+    public Vector multiplyPointwise(Vector vector) {
+    	if(vector.data.length != data.length) {
+    		throw new IllegalArgumentException("Vectors of different size");
+    	}
+    	
+    	double[] newData = new double[data.length];
+    	for(int i = 0; i < data.length; i++) {
+    		newData[i] = data[i] * vector.data[i];
+    	}
+    	
+    	return new Vector(newData);
     }
     
 }

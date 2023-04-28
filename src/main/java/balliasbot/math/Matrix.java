@@ -4,8 +4,6 @@ import java.util.Random;
 
 public class Matrix {
 	
-	private static final Random RANDOM = new Random();
-	
 	public final int rows;
 	public final int columns;
 	private double[][] data;
@@ -14,23 +12,6 @@ public class Matrix {
 		this.rows = data.length;
 		this.columns = data[0].length;
 		this.data = data;
-	}
-	
-	public Matrix(int rows, int columns) {
-		this.data = initMatrixArray(rows, columns);
-		this.rows = rows;
-		this.columns = columns;
-	}
-	
-	private static double[][] initMatrixArray(int rows, int columns) {
-		double[][] data = new double[rows][columns];
-		for(int i = 0; i < rows; i++) {
-			for(int j = 0; j < columns; j++) {
-				data[i][j] = RANDOM.nextDouble(-1, 1);
-			}
-		}
-		
-		return data;
 	}
 	
 	public Vector rowVector(int row) {
@@ -44,6 +25,60 @@ public class Matrix {
 		}
 		
 		return new Vector(columnArray);
+	}
+	
+	public Matrix addColumn(Vector column) {
+		double[][] arr = new double[rows][columns + 1]; 
+		
+		return new Matrix(arr);
+	}
+	
+	public Matrix plus(double x) {
+		double[][] sum = new double[rows][columns];
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				sum[i][j] = data[i][j] + x;
+			}
+		}
+		
+		return new Matrix(sum);
+	}
+	
+	public Matrix transform() {
+		double[][] transformed = new double[columns][rows];
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				transformed[j][i] = data[i][j];
+			}
+		}
+		
+		return new Matrix(transformed);
+	}
+	
+	public Matrix dot(Matrix b) {
+		if (columns != b.rows) {         
+			throw new IllegalArgumentException("Matrix dimensions are incompatible.");      
+		}
+		  
+		double[][] entries = new double[rows][b.columns];  
+		for (int row = 0; row < rows; row++) {         
+			for (int col = 0; col < b.columns; col++) {              
+				entries[row][col] = rowVector(row).dot(b.columnVector(col));         
+			}      
+		}    
+		
+		return new Matrix(entries);
+	}
+	
+	public Matrix applyFunction(ActivationFunction function) {
+		double[][] activated = new double[rows][columns];
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				activated[i][j] = function.calculate(data[i][j]);
+			}
+		}
+		
+		return new Matrix(activated);
 	}
 	
 	public static Matrix identity(int n) {
