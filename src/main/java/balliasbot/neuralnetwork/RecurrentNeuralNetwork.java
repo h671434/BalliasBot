@@ -17,6 +17,8 @@ public class RecurrentNeuralNetwork implements NeuralNetwork {
 	
 	public RecurrentNeuralNetwork(int numberOfInputs, int numberOfLTSMNeurons, 
 			int numberOfOutputs, WeightInitializer weights) {
+		this.inputLayer = new DenseLayer(
+				weights.get("input"), ActivationFunction.SIGMOID);
 		this.ltsmLayer = new LSTMLayer(numberOfInputs,
 				weights.get("ltsm_forget_gate"),
 				weights.get("ltsm_input_gate_sigmoid"),
