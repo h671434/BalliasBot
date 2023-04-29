@@ -17,14 +17,22 @@ public class LSTMLayer extends NeuralLayer {
 	private Vector previousCellState; 
 	private Vector previousCellOutput; 
 	
-	public LSTMLayer(int numberOfInputs, Matrix forgetGateWeights, 
-			Matrix inputGateSigmoidWeights, Matrix inputGateTanhWeights, 
-			Matrix outputGateWeights) {
-		super(forgetGateWeights.rows);
-		this.forgetGate = new DenseLayer(forgetGateWeights, ActivationFunction.SIGMOID);
-		this.inputGateSigmoid = new DenseLayer(inputGateSigmoidWeights, ActivationFunction.SIGMOID);
-		this.inputGateTanh = new DenseLayer(inputGateTanhWeights, ActivationFunction.TANH);
-		this.outputGate = new DenseLayer( outputGateWeights, ActivationFunction.SIGMOID);
+	public LSTMLayer() {
+		this.forgetGate = new DenseLayer(ActivationFunction.SIGMOID);
+		this.inputGateSigmoid = new DenseLayer(ActivationFunction.SIGMOID);
+		this.inputGateTanh = new DenseLayer(ActivationFunction.TANH);
+		this.outputGate = new DenseLayer(ActivationFunction.SIGMOID);
+	}
+	
+	public LSTMLayer(DenseLayer forgetGate, DenseLayer inputGateSigmoid, 
+			DenseLayer inputGateTanh, DenseLayer outputGate,
+			Vector previousCellState, Vector previousCellOutput) {
+		this.forgetGate = forgetGate;
+		this.inputGateSigmoid = inputGateSigmoid;
+		this.inputGateTanh = inputGateTanh;
+		this.outputGate = outputGate;
+		this.previousCellState = previousCellState;
+		this.previousCellOutput = previousCellOutput;
 	}
 	
 	@Override
@@ -49,6 +57,91 @@ public class LSTMLayer extends NeuralLayer {
 		previousCellOutput = newCellOutput;
 		
 		return newCellOutput;
+	}
+	
+	public void setForgetGateBiases(Vector biases) {
+		forgetGate.setBiases(biases);
+	}
+	
+	public void setForgetGateWeights(Matrix weights) {
+		forgetGate.setWeights(weights);
+	}
+	
+	public void setInputGateSigmoidBiases(Vector biases) {
+		inputGateSigmoid.setBiases(biases);
+	}
+	
+	public void setInputGateSigmoidWeights(Matrix weights) {
+		inputGateSigmoid.setWeights(weights);
+	}
+	
+	public void setInputGateTanhBiases(Vector biases) {
+		inputGateTanh.setBiases(biases);
+	}
+	
+	public void setInputGateTanhWeights(Matrix weights) {
+		inputGateTanh.setWeights(weights);
+	}
+	
+	
+	public void setOutputGateBiases(Vector biases) {
+		outputGate.setBiases(biases);
+	}
+	
+	public void setOutputGateWeights(Matrix weights) {
+		outputGate.setWeights(weights);
+	}
+	
+	public static final class Builder {
+		
+		private DenseLayer forgetGate;
+		private DenseLayer inputGateSigmoid;
+		private DenseLayer inputGateTanh;
+		private DenseLayer outputGate; 
+		private Vector previousCellState; 
+		private Vector previousCellOutput; 
+		
+		public Builder setForgetGate(DenseLayer forgetGate) {
+			this.forgetGate = forgetGate;
+			
+			return this;
+		}
+		
+		public Builder setInputGateSigmoid(DenseLayer inputGateSigmoid) {
+			this.inputGateSigmoid = inputGateSigmoid;
+			
+			return this;
+		}
+		
+		public Builder setInputGateTanh(DenseLayer inputGateTanh) {
+			this.inputGateTanh = inputGateTanh;
+			
+			return this;
+		}
+		
+		public Builder setOutputGate(DenseLayer outputGate) {
+			this.outputGate = outputGate;
+			
+			return this;
+		}
+		
+		public Builder setPreviousCellState(Vector previousCellState) {
+			this.previousCellState = previousCellState;
+			
+			return this;
+		}
+		
+		public Builder setPreviousCellOutput(Vector previousCellOutput) {
+			this.previousCellOutput = previousCellOutput;
+			
+			return this;
+		}
+		
+		public LSTMLayer build() {
+			return new LSTMLayer(forgetGate, inputGateSigmoid, inputGateTanh,
+					outputGate, previousCellState, previousCellOutput);
+		}
+		
 	}
 	
 }

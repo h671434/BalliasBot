@@ -1,6 +1,8 @@
 package balliasbot.math;
 
-public class Vector {
+import java.util.Iterator;
+
+public class Vector implements Iterable<Double> {
 
 	private double[] data;
 	
@@ -17,6 +19,19 @@ public class Vector {
 	
 	public double get(int index) {
 		return data[index];
+	}
+	
+	public void set(int index, double value) {
+		data[index] = value;
+	}
+	
+	public double[] asArray() {
+		double[] copy = new double[data.length];
+		for(int i = 0; i < data.length; i++) {
+			copy[i] = data[i];
+		}
+		
+		return copy;
 	}
 	
 	public int size() {
@@ -136,6 +151,18 @@ public class Vector {
     	return new Vector(newData);
     }
     
+    public Vector concat(double value) {
+    	double[] newData = new double[data.length + 1];
+    	
+    	for(int i = 0; i < data.length; i++) {
+    		newData[i] = data[i];
+    	}
+    	
+    	newData[data.length] = value;
+    	
+    	return new Vector(newData);
+    }
+    
     public Vector multiplyPointwise(Vector vector) {
     	if(vector.data.length != data.length) {
     		throw new IllegalArgumentException("Vectors of different size");
@@ -157,5 +184,25 @@ public class Vector {
     	
     	return new Vector(newData);
     }
-    
+
+	@Override
+	public Iterator<Double> iterator() {
+		return new Iterator<Double>() {
+			int count = 0;
+
+			@Override
+			public boolean hasNext() {
+				return (count < data.length);
+			}
+
+			@Override
+			public Double next() {
+		    	double result = data[count];
+		    	count++;
+		    	
+				return result;
+			}
+		};
+	}
+	
 }

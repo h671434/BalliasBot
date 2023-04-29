@@ -14,23 +14,29 @@ public class Matrix {
 		this.data = data;
 	}
 	
-	public Vector rowVector(int row) {
+	public double get(int row, int column) {
+		return data[row][column];
+	}
+	
+	public void set(int row, int column, double value) {
+		data[row][column] = value;
+	}
+	
+	public Vector getRowVector(int row) {
 		return new Vector(data[row]);
 	}
 	
-	public Vector columnVector(int column) {
+	public void setRowVector(int rowIndex, Vector newRow) {
+		data[rowIndex] = newRow.asArray();
+	}
+	
+	public Vector getColumnVector(int column) {
 		double[] columnArray = new double[data[0].length];
 		for(int i = 0; i < data[0].length; i++) {
 			columnArray[i] = data[i][column];
 		}
 		
 		return new Vector(columnArray);
-	}
-	
-	public Matrix addColumn(Vector column) {
-		double[][] arr = new double[rows][columns + 1]; 
-		
-		return new Matrix(arr);
 	}
 	
 	public Matrix plus(double x) {
@@ -63,7 +69,7 @@ public class Matrix {
 		double[][] entries = new double[rows][b.columns];  
 		for (int row = 0; row < rows; row++) {         
 			for (int col = 0; col < b.columns; col++) {              
-				entries[row][col] = rowVector(row).dot(b.columnVector(col));         
+				entries[row][col] = getRowVector(row).dot(b.getColumnVector(col));         
 			}      
 		}    
 		
@@ -95,7 +101,7 @@ public class Matrix {
 	public Vector dot(Vector input) {
 		double[] outputData = new double[input.size()];
 		for(int i = 0; i < outputData.length; i++) {
-			outputData[i] = input.dot(rowVector(i));
+			outputData[i] = input.dot(getRowVector(i));
 		}
 		
 		return new Vector(outputData);
