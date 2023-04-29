@@ -91,5 +91,14 @@ public class Matrix {
 		
 		return new Matrix(data);
 	}
+
+	public Vector dot(Vector input) {
+		double[] outputData = new double[input.size()];
+		for(int i = 0; i < outputData.length; i++) {
+			outputData[i] = input.dot(rowVector(i));
+		}
+		
+		return new Vector(outputData);
+	}
 	
 }

@@ -1,25 +1,15 @@
 package balliasbot.neuralnetwork.layer;
 
-import balliasbot.math.ActivationFunction;
-import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
 
 public abstract class NeuralLayer {
 
-	protected double bias;
-	protected Vector weights;
-	private ActivationFunction activation;
+	protected int numberOfInputs;
 	
-	public NeuralLayer(Vector weights, ActivationFunction activation) {
-		this.bias = 1;
-		this.weights = weights;
-		this.activation = activation;
+	public NeuralLayer(int numberOfInputs) {
+		this.numberOfInputs = numberOfInputs;
 	}
 	
-	public Vector compute(Vector input) {
-		Matrix preActivation = input.dot(weights).plus(bias);
-		
-		return preActivation.applyFunction(activation);
-	}
+	public abstract Vector compute(Vector input);
 	
 }

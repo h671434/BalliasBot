@@ -15,6 +15,10 @@ public class Vector {
 		}
 	}
 	
+	public double get(int index) {
+		return data[index];
+	}
+	
 	public int size() {
 		return data.length;
 	}
@@ -30,6 +34,15 @@ public class Vector {
         }
         
         return new Vector(newArray);
+    }
+    
+    public Vector plus(double x) {
+    	double[] newData = new double[data.length];
+    	for(int i = 0; i < data.length; i++) {
+    		newData[i] = data[i] + x;
+    	}
+    	
+    	return new Vector(newData);
     }
 
     public Vector minus(Vector other) {
@@ -131,6 +144,15 @@ public class Vector {
     	double[] newData = new double[data.length];
     	for(int i = 0; i < data.length; i++) {
     		newData[i] = data[i] * vector.data[i];
+    	}
+    	
+    	return new Vector(newData);
+    }
+    
+    public Vector applyFunction(ActivationFunction function) {
+    	double[] newData = new double[data.length];
+    	for(int i = 0; i < data.length; i++) {
+    		newData[i] = function.calculate(data[i]);
     	}
     	
     	return new Vector(newData);
