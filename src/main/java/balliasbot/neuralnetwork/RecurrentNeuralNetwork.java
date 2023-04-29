@@ -10,19 +10,18 @@ import balliasbot.neuralnetwork.weights.WeightInitializer;
 
 public class RecurrentNeuralNetwork implements NeuralNetwork {
 
-	private final InputLayer inputLayer;
 	private final LSTMLayer ltsmLayer;
-	private final OutputLayer outputLayer;
+	private final DenseLayer outputLayer;
 	
 	public RecurrentNeuralNetwork(int numberOfInputs, int numberOfLTSMNeurons, 
 			int numberOfOutputs, WeightInitializer weights) {
-		this.inputLayer = new InputLayer();
-		this.ltsmLayer = new LSTMLayer(numberOfLTSMNeurons,
+		this.ltsmLayer = new LSTMLayer(numberOfInputs,
 				weights.get("ltsm_forget_gate"),
 				weights.get("ltsm_input_gate_sigmoid"),
 				weights.get("ltsm_input_gate_tanh"),
 				weights.get("ltsm_output_gate"));
-		this.outputLayer = new OutputLayer();
+		this.outputLayer = new DenseLayer(weights.get("output"), 
+				ActivationFunction.SIGMOID);
 	}
 
 	@Override
