@@ -1,15 +1,17 @@
 package balliasbot.neuralnetwork;
 
+import java.util.List;
+
 import balliasbot.math.ActivationFunction;
+import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
 import balliasbot.neuralnetwork.layer.DenseLayer;
-import balliasbot.neuralnetwork.layer.InputLayer;
 import balliasbot.neuralnetwork.layer.LSTMLayer;
-import balliasbot.neuralnetwork.layer.OutputLayer;
 import balliasbot.neuralnetwork.weights.WeightInitializer;
 
 public class RecurrentNeuralNetwork implements NeuralNetwork {
 
+	private final DenseLayer inputLayer;
 	private final LSTMLayer ltsmLayer;
 	private final DenseLayer outputLayer;
 	
@@ -20,12 +22,12 @@ public class RecurrentNeuralNetwork implements NeuralNetwork {
 				weights.get("ltsm_input_gate_sigmoid"),
 				weights.get("ltsm_input_gate_tanh"),
 				weights.get("ltsm_output_gate"));
-		this.outputLayer = new DenseLayer(weights.get("output"), 
-				ActivationFunction.SIGMOID);
+		this.outputLayer = new DenseLayer(
+				weights.get("output"), ActivationFunction.SIGMOID);
 	}
 
 	@Override
-	public Vector predict(Vector cellInput) {
+	public Vector predict(Vector inputs) {
 		// TODO Auto-generated method stub
 		return null;
 	}
