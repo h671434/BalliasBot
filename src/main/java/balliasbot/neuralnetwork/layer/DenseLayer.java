@@ -3,6 +3,7 @@ package balliasbot.neuralnetwork.layer;
 import balliasbot.math.ActivationFunction;
 import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
+import balliasbot.neuralnetwork.weights.WeightInitializer;
 
 public class DenseLayer extends NeuralLayer {
 
@@ -16,11 +17,19 @@ public class DenseLayer extends NeuralLayer {
 		this.activation = activation;
 	}
 	
+	public DenseLayer(int numberOfInputs, int weightsPerInput, ActivationFunction activation) {
+		this.biases = WeightInitializer.generateNewBiases(numberOfInputs, false);
+		this.weights = WeightInitializer.generateNewWeights(numberOfInputs, weightsPerInput);
+		this.activation = activation;
+	}
+	
 	public DenseLayer(ActivationFunction activation) {
 		this.activation = activation;
 	}
 	
+	@Override
 	public Vector compute(Vector input) {
+		
 		Vector preActivation = weights.dot(input).plus(biases);
 		
 		return activate(preActivation);
@@ -29,75 +38,6 @@ public class DenseLayer extends NeuralLayer {
 	protected Vector activate(Vector preActivation) {
 		return preActivation.applyFunction(activation);
 	}
-	
-	public Vector getBiases() {
-		return biases;
-	}
-	
-	public void setBiases(Vector biases) {
-		this.biases = biases;
-	}
-	
-	public double getBias(int index) {
-		return biases.get(index);
-	}
-	
-	public void setBias(int index, double bias) {
-		biases.set(index, bias);
-	}
-	
-	public Matrix getWeights() {
-		return weights;
-	}
-	
-	public void setWeights(Matrix weights) {
-		this.weights = weights;
-	}
-	
-	public Vector getWeightRow(int index) {
-		return weights.getRowVector(index);
-	}
-	
-	public void setWeightRow(int index, Vector row) {
-		weights.setRowVector(index, row);
-	}
-	
-	public double getWeight(int row, int column) {
-		return weights.get(row, column);
-	}
-	
-	public void setWeight(int row, int column, double weight) {
-		weights.set(row, column, weight);
-	}
-	
-	public static final class Builder {
-		
-		private Vector biases;
-		private Matrix weights;
-		private ActivationFunction activation;
-		
-		public Builder setBiases(Vector biases) {
-			this.biases = biases;
-			
-			return this;
-		}
-		
-		public Builder setWeights(Matrix weights) {
-			this.weights = weights;
-			
-			return this;
-		}
-		
-		public Builder setActivation(ActivationFunction activation) {
-			this.activation = activation;
-			
-			return this;
-		}
-		
-		public DenseLayer build() {
-			return new DenseLayer(biases, weights, activation);
-		}
-		
-	}
-	
+
+
 }

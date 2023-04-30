@@ -104,7 +104,19 @@ public class Matrix {
 			outputData[i] = input.dot(getRowVector(i));
 		}
 		
+		
 		return new Vector(outputData);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder out = new StringBuilder();
+		
+		for(int i = 0; i < rows; i++) {
+			out.append(getRowVector(i).toString() + "\n");
+		}
+		
+		return out.toString();
 	}
 	
 }

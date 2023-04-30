@@ -8,7 +8,7 @@ public interface ActivationFunction {
 	};
 	
 	public static final ActivationFunction TANH = x -> {
-		return (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x));
+		return Math.tanh(x);
 	};
 	
 	public static final ActivationFunction BINARY = x -> {

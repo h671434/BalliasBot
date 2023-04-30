@@ -1,5 +1,7 @@
 package balliasbot.neuralnetwork.layer;
 
+import java.util.Random;
+
 import balliasbot.math.ActivationFunction;
 import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
@@ -7,24 +9,18 @@ import balliasbot.math.Vector;
 /**
  * Long Short Term Memory used in recurrent neural network
  */
-public class LSTMLayer extends NeuralLayer {
+public class LSTMCell extends NeuralLayer {
 	
 	private final DenseLayer forgetGate;
 	private final DenseLayer inputGateSigmoid;
 	private final DenseLayer inputGateTanh;
 	private final DenseLayer outputGate; 
+	private final ResizeLayer resizeLayer;
 	
 	private Vector previousCellState; 
 	private Vector previousCellOutput; 
 	
-	public LSTMLayer() {
-		this.forgetGate = new DenseLayer(ActivationFunction.SIGMOID);
-		this.inputGateSigmoid = new DenseLayer(ActivationFunction.SIGMOID);
-		this.inputGateTanh = new DenseLayer(ActivationFunction.TANH);
-		this.outputGate = new DenseLayer(ActivationFunction.SIGMOID);
-	}
-	
-	public LSTMLayer(DenseLayer forgetGate, DenseLayer inputGateSigmoid, 
+	public LSTMCell(DenseLayer forgetGate, DenseLayer inputGateSigmoid, 
 			DenseLayer inputGateTanh, DenseLayer outputGate,
 			Vector previousCellState, Vector previousCellOutput) {
 		this.forgetGate = forgetGate;
@@ -33,6 +29,39 @@ public class LSTMLayer extends NeuralLayer {
 		this.outputGate = outputGate;
 		this.previousCellState = previousCellState;
 		this.previousCellOutput = previousCellOutput;
+		this.resizeLayer = new ResizeLayer(previousCellOutput.size(), previousCellState.size());
+	}
+	
+	public LSTMCell(int numberOfInputs, int weightsPerInput) {
+		this.forgetGate = new DenseLayer(
+				numberOfInputs * 2, weightsPerInput, ActivationFunction.SIGMOID);
+		this.inputGateSigmoid = new DenseLayer(
+				numberOfInputs * 2, weightsPerInput, ActivationFunction.SIGMOID);
+		this.inputGateTanh = new DenseLayer(
+				numberOfInputs * 2, weightsPerInput, ActivationFunction.TANH);
+		this.outputGate = new DenseLayer(
+				numberOfInputs * 2, weightsPerInput, ActivationFunction.SIGMOID);
+		this.resizeLayer = new ResizeLayer(numberOfInputs * 2, numberOfInputs);
+		
+		initializePreviousCellData(numberOfInputs);
+	}
+	
+	private void initializePreviousCellData(int numberOfInputs) {
+		double[] previousCellStateData = new double[numberOfInputs * 2];
+		double[] previousCellOutputData = new double[numberOfInputs];
+		
+		Random random = new Random();
+		
+		for(int i = 0; i < numberOfInputs * 2; i++) {
+			previousCellStateData[i] = random.nextDouble(0.4, 0.7);
+			
+			if(i < numberOfInputs) {
+				previousCellOutputData[i] = random.nextDouble(0.4, 0.7);	
+			}
+		}
+		
+		previousCellState = new Vector(previousCellStateData);
+		previousCellOutput = new Vector(previousCellOutputData);
 	}
 	
 	@Override
@@ -49,47 +78,15 @@ public class LSTMLayer extends NeuralLayer {
 				.plus(inputGateResult);
 		
 		Vector outputGateResult = outputGate.compute(input); 
-		
-		Vector newCellOutput = outputGateResult.multiplyPointwise(
-				newCellState.applyFunction(ActivationFunction.TANH));
-		
+
+		Vector newCellOutput = resizeLayer.compute(
+				outputGateResult.multiplyPointwise(
+				newCellState.applyFunction(ActivationFunction.TANH)));
+
 		previousCellState = newCellState;
 		previousCellOutput = newCellOutput;
 		
 		return newCellOutput;
-	}
-	
-	public void setForgetGateBiases(Vector biases) {
-		forgetGate.setBiases(biases);
-	}
-	
-	public void setForgetGateWeights(Matrix weights) {
-		forgetGate.setWeights(weights);
-	}
-	
-	public void setInputGateSigmoidBiases(Vector biases) {
-		inputGateSigmoid.setBiases(biases);
-	}
-	
-	public void setInputGateSigmoidWeights(Matrix weights) {
-		inputGateSigmoid.setWeights(weights);
-	}
-	
-	public void setInputGateTanhBiases(Vector biases) {
-		inputGateTanh.setBiases(biases);
-	}
-	
-	public void setInputGateTanhWeights(Matrix weights) {
-		inputGateTanh.setWeights(weights);
-	}
-	
-	
-	public void setOutputGateBiases(Vector biases) {
-		outputGate.setBiases(biases);
-	}
-	
-	public void setOutputGateWeights(Matrix weights) {
-		outputGate.setWeights(weights);
 	}
 	
 	public static final class Builder {
@@ -137,8 +134,8 @@ public class LSTMLayer extends NeuralLayer {
 			return this;
 		}
 		
-		public LSTMLayer build() {
-			return new LSTMLayer(forgetGate, inputGateSigmoid, inputGateTanh,
+		public LSTMCell build() {
+			return new LSTMCell(forgetGate, inputGateSigmoid, inputGateTanh,
 					outputGate, previousCellState, previousCellOutput);
 		}
 		

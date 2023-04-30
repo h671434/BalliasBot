@@ -128,9 +128,9 @@ public class Vector implements Iterable<Double> {
     		throw new IllegalArgumentException("Vectors are of different sizes");
     	}
     	
-        int sum = 0;
+        double sum = 0;
         for(int i = 0; i < data.length; i++) {
-        	sum += data[i] * other.data[i];
+        	sum += data[i] * other.get(i);
         }
         
         return sum;
@@ -203,6 +203,19 @@ public class Vector implements Iterable<Double> {
 				return result;
 			}
 		};
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder out = new StringBuilder();
+		
+		out.append("(");
+		for(int i = 0; i < data.length; i++) {
+			out.append(data[i] + ",");
+		}
+		out.append(")");
+		
+		return out.toString();
 	}
 	
 }
