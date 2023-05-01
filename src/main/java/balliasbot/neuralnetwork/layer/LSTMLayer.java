@@ -55,11 +55,7 @@ public class LSTMLayer extends NeuralLayer {
 	public Vector compute(Vector cellInput) { 
 		Vector input = cellInput.concat(previousCellOutput); 
 		
-		System.out.println("input: " + input.size());
-		System.out.println("prevCellOut: " + previousCellOutput.size());
-		System.out.println("cellIn: " + cellInput.size());
 		Vector forgetGateResult = forgetGate.compute(input); 
-
 		
 		Vector inputGateSigmoidResult = inputGateSigmoid.compute(input); 
 		Vector inputGateTanhResult = inputGateTanh.compute(input);
