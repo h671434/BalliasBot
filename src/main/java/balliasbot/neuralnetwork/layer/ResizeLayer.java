@@ -12,6 +12,7 @@ public class ResizeLayer extends NeuralLayer {
 	private ActivationFunction activation;
 	
 	public ResizeLayer(int numberOfInputs, int desiredVectorSize) {
+		super(numberOfInputs, desiredVectorSize);
 		this.desiredVectorSize = desiredVectorSize;
 		this.weights = WeightInitializer.generateNewWeights(numberOfInputs, desiredVectorSize);
 		this.activation = ActivationFunction.TANH;
@@ -24,7 +25,7 @@ public class ResizeLayer extends NeuralLayer {
 			data[i] = input.dot(weights.getRowVector(i));
 		}
 
-		return new Vector(data).applyFunction(activation);
+		return activation.calculate(new Vector(data));
 	}
 	
 //	/**

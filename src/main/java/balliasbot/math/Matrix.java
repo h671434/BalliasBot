@@ -1,6 +1,7 @@
 package balliasbot.math;
 
 import java.util.Random;
+import java.util.function.Function;
 
 public class Matrix {
 	
@@ -76,11 +77,11 @@ public class Matrix {
 		return new Matrix(entries);
 	}
 	
-	public Matrix applyFunction(ActivationFunction function) {
+	public Matrix applyFunction(Function<Double, Double> function) {
 		double[][] activated = new double[rows][columns];
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < columns; j++) {
-				activated[i][j] = function.calculate(data[i][j]);
+				activated[i][j] = function.apply(data[i][j]);
 			}
 		}
 		
@@ -99,8 +100,8 @@ public class Matrix {
 	}
 
 	public Vector dot(Vector input) {
-		double[] outputData = new double[input.size()];
-		for(int i = 0; i < outputData.length; i++) {
+		double[] outputData = new double[rows];
+		for(int i = 0; i < rows; i++) {
 			outputData[i] = input.dot(getRowVector(i));
 		}
 		

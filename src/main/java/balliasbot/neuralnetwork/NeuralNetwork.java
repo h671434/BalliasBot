@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import balliasbot.math.ActivationFunction;
+import balliasbot.math.CostFunction;
 import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
 import balliasbot.neuralnetwork.layer.NeuralLayer;
@@ -37,7 +38,7 @@ public abstract class NeuralNetwork {
 			for(int j = 0; j < targets.size(); j++) {
 				outputs.add(predict(inputs.get(j)));
 				
-				double cost = meanSquaredError(outputs.get(i), targets.get(j));
+				double error = CostFunction.meanSquaredError(outputs.get(i), targets.get(j));
 				// TODO
 			}
 		}
@@ -45,16 +46,6 @@ public abstract class NeuralNetwork {
 		return outputs;
 	}
 	
-	private double meanSquaredError(Vector output, Vector target) {
-		double[] outputArray = output.asArray();
-		double[] targetArray = target.asArray();
-		
-		double sum = 0;
-		for(int i = 0; i < outputArray.length; i++) {
-			sum += Math.pow(outputArray[i] - targetArray[i], 2);
-		}
-		
-		return sum / outputArray.length;
-	}
+
 	
 }

@@ -1,6 +1,7 @@
 package balliasbot.math;
 
 import java.util.Iterator;
+import java.util.function.Function;
 
 public class Vector implements Iterable<Double> {
 
@@ -176,10 +177,10 @@ public class Vector implements Iterable<Double> {
     	return new Vector(newData);
     }
     
-    public Vector applyFunction(ActivationFunction function) {
+    public Vector applyFunction(Function<Double, Double> function) {
     	double[] newData = new double[data.length];
     	for(int i = 0; i < data.length; i++) {
-    		newData[i] = function.calculate(data[i]);
+    		newData[i] = function.apply(data[i]);
     	}
     	
     	return new Vector(newData);

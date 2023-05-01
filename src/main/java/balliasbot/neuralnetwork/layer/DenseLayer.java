@@ -12,32 +12,24 @@ public class DenseLayer extends NeuralLayer {
 	private ActivationFunction activation;
 	
 	public DenseLayer(Vector biases, Matrix weights, ActivationFunction activation) {
+		super(weights.rows, weights.columns);
 		this.biases = biases;
 		this.weights = weights;
 		this.activation = activation;
 	}
 	
-	public DenseLayer(int numberOfInputs, int weightsPerInput, ActivationFunction activation) {
-		this.biases = WeightInitializer.generateNewBiases(numberOfInputs, false);
-		this.weights = WeightInitializer.generateNewWeights(numberOfInputs, weightsPerInput);
-		this.activation = activation;
-	}
-	
-	public DenseLayer(ActivationFunction activation) {
+	public DenseLayer(int numberOfInputs, int numberOfOutputs, ActivationFunction activation) {
+		super(numberOfInputs, numberOfOutputs);
+		this.biases = WeightInitializer.generateNewBiases(numberOfOutputs, false);
+		this.weights = WeightInitializer.generateNewWeights(numberOfInputs, numberOfOutputs);
 		this.activation = activation;
 	}
 	
 	@Override
 	public Vector compute(Vector input) {
-		
 		Vector preActivation = weights.dot(input).plus(biases);
-		
-		return activate(preActivation);
-	}
-	
-	protected Vector activate(Vector preActivation) {
-		return preActivation.applyFunction(activation);
-	}
 
+		return activation.calculate(preActivation);
+	}
 
 }
