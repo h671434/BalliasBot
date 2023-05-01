@@ -31,5 +31,11 @@ public class DenseLayer extends NeuralLayer {
 
 		return activation.calculate(preActivation);
 	}
+	
+	public void updateWeights(Vector input, Vector error, double learningRate) {
+		Vector adjusmtent = input.multiplyPointwise(error).scale(learningRate);
+		
+		weights = weights.minus(adjusmtent);
+	}
 
 }

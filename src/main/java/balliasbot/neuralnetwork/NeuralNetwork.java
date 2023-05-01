@@ -38,8 +38,8 @@ public abstract class NeuralNetwork {
 			for(int j = 0; j < targets.size(); j++) {
 				outputs.add(predict(inputs.get(j)));
 				
-				double error = CostFunction.meanSquaredError(outputs.get(i), targets.get(j));
-				// TODO
+				double error = CostFunction.meanSquaredError(outputs.get(i), targets.get(i));
+				
 			}
 		}
 		

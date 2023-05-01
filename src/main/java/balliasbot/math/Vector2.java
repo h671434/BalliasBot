@@ -32,7 +32,7 @@ public class Vector2 extends Vector {
         return new Vector2(x - other.x, y - other.y);
     }
 
-    public Vector2 scaled(double scale) {
+    public Vector2 scale(double scale) {
         return new Vector2(x * scale, y * scale);
     }
     

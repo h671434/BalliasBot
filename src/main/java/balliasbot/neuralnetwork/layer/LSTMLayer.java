@@ -37,13 +37,11 @@ public class LSTMLayer extends NeuralLayer {
 		double[] previousCellStateData = new double[numberOfOutputs];
 		double[] previousCellOutputData = new double[numberOfOutputs];
 		
-		Random random = new Random();
-		
 		for(int i = 0; i < numberOfOutputs; i++) {
-			previousCellStateData[i] = random.nextDouble(0.4, 0.7);
+			previousCellStateData[i] = 0;
 			
 			if(i < numberOfOutputs) {
-				previousCellOutputData[i] = random.nextDouble(0.4, 0.7);	
+				previousCellOutputData[i] = 0;	
 			}
 		}
 		

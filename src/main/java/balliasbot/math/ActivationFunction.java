@@ -12,7 +12,7 @@ public interface ActivationFunction {
 
 		@Override
 		public Vector derivative(Vector input) {
-			return input; // TODO
+			return input.applyFunction(x -> x * (1 - x));
 		}
 	};
 	
@@ -24,7 +24,11 @@ public interface ActivationFunction {
 
 		@Override
 		public Vector derivative(Vector input) {
-			return input; // TODO
+			return input.applyFunction(x -> {
+				double tanhOutput = Math.tanh(x);
+				
+				return 1 - (tanhOutput * tanhOutput);
+			});
 		}
 	};
 	
@@ -36,7 +40,7 @@ public interface ActivationFunction {
 
 		@Override
 		public Vector derivative(Vector input) {
-			return input; // TODO
+			return calculate(input);
 		}
 	};
 	
@@ -48,7 +52,7 @@ public interface ActivationFunction {
 
 		@Override
 		public Vector derivative(Vector input) {
-			return input; // TODO
+			return calculate(input);
 		}
 	};
 	

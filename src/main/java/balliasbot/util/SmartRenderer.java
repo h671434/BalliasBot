@@ -98,8 +98,8 @@ public class SmartRenderer extends Renderer {
 
         // Draw a line that points out from the nose of the car.
        drawLine3d(goLeft ? Color.BLUE : Color.RED,
-                myCar.position.plus(myCar.orientation.forward.scaled(150)),
-                myCar.position.plus(myCar.orientation.forward.scaled(300)));
+                myCar.position.plus(myCar.orientation.forward.scale(150)),
+                myCar.position.plus(myCar.orientation.forward.scale(300)));
 
         drawString3d(goLeft ? "left" : "right", Color.WHITE, myCar.position.toRLBotVector(), 2, 2);
 

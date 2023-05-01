@@ -40,6 +40,21 @@ public class Matrix {
 		return new Vector(columnArray);
 	}
 	
+	/**
+	 * Returns a new Matrix where each rows is equal to the current row minus
+	 * the vector.
+	 */
+	public Matrix minus(Vector vector) {
+		double[][] newData = new double[rows][columns];
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				newData[i][j] = data[i][j] - vector.get(i);
+			}
+		}
+		
+		return new Matrix(newData);
+	}
+	
 	public Matrix plus(double x) {
 		double[][] sum = new double[rows][columns];
 		for(int i = 0; i < rows; i++) {

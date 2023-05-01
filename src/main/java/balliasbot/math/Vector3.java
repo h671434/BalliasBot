@@ -55,18 +55,18 @@ public class Vector3 extends Vector {
         return new Vector3(x - other.x, y - other.y, z - other.z);
     }
 
-    public Vector3 scaled(double scale) {
+    public Vector3 scale(double scale) {
         return new Vector3(x * scale, y * scale, z * scale);
     }
 
-    public Vector3 scaledToMagnitude(double magnitude) {
+    public Vector3 scaleToMagnitude(double magnitude) {
         if (isZero()) {
             throw new IllegalStateException("Cannot scale up a vector with length zero!");
         }
         
         double scaleRequired = magnitude / magnitude();
         
-        return scaled(scaleRequired);
+        return scale(scaleRequired);
     }
 
     public Vector3 normalized() {
@@ -74,7 +74,7 @@ public class Vector3 extends Vector {
             throw new IllegalStateException("Cannot normalize a vector with length zero!");
         }
         
-        return this.scaled(1 / magnitude());
+        return this.scale(1 / magnitude());
     }
 
     public double distance(Vector3 other) {
@@ -92,7 +92,7 @@ public class Vector3 extends Vector {
 	public Vector3 flatten(Vector3 up) {
 		up = up.normalized();
 		
-		return minus(up.scaled(dot(up)));
+		return minus(up.scale(dot(up)));
 	}
 
     public double angle(Vector3 v) {
@@ -110,7 +110,7 @@ public class Vector3 extends Vector {
     }
     
     public Vector3 offset(Vector3 direction, double offsetvalue) {
-    	return minus(direction.scaled(offsetvalue));
+    	return minus(direction.scale(offsetvalue));
     }
 
 	public Vector3 clamp(Vector3 start, Vector3 end) {

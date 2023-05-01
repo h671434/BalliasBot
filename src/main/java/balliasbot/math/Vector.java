@@ -22,10 +22,6 @@ public class Vector implements Iterable<Double> {
 		return data[index];
 	}
 	
-	public void set(int index, double value) {
-		data[index] = value;
-	}
-	
 	public double[] asArray() {
 		double[] copy = new double[data.length];
 		for(int i = 0; i < data.length; i++) {
@@ -74,7 +70,7 @@ public class Vector implements Iterable<Double> {
         return new Vector(newArray);
     }
 
-    public Vector scaled(double scale) {
+    public Vector scale(double scale) {
     	double[] newArray = new double[data.length];
         for(int i = 0; i < data.length; i++) {
         	newArray[i] = data[i] * scale;
@@ -83,14 +79,14 @@ public class Vector implements Iterable<Double> {
         return new Vector(newArray);
     }
 
-    public Vector scaledToMagnitude(double magnitude) {
+    public Vector scaleToMagnitude(double magnitude) {
         if (isZero()) {
             throw new IllegalStateException("Cannot scale up a vector with length zero!");
         }
         
         double scaleRequired = magnitude / magnitude();
         
-        return scaled(scaleRequired);
+        return scale(scaleRequired);
     }
 	
     public double magnitude() {
@@ -121,7 +117,7 @@ public class Vector implements Iterable<Double> {
             throw new IllegalStateException("Cannot normalize a vector with length zero!");
         }
         
-        return this.scaled(1 / magnitude());
+        return this.scale(1 / magnitude());
     }
     
     public double dot(Vector other) {
@@ -137,6 +133,10 @@ public class Vector implements Iterable<Double> {
         return sum;
     }
     
+    /**
+     * Concatation of this and the other vector.
+     * Returns a new vector where all values from both vectors are included.
+     */
     public Vector concat(Vector vector) {
     	int size = data.length + vector.data.length;
     	double[] newData = new double[size];
@@ -164,6 +164,10 @@ public class Vector implements Iterable<Double> {
     	return new Vector(newData);
     }
     
+    /**
+     * Multiplies each value with the value at the same index of the other
+     * vector. Also known as the hamard product.
+     */
     public Vector multiplyPointwise(Vector vector) {
     	if(vector.data.length != data.length) {
     		throw new IllegalArgumentException("Vectors of different size");
@@ -177,6 +181,10 @@ public class Vector implements Iterable<Double> {
     	return new Vector(newData);
     }
     
+    /**
+     * Returns a new vector where the function is applied to each value in the 
+     * vector.
+     */
     public Vector applyFunction(Function<Double, Double> function) {
     	double[] newData = new double[data.length];
     	for(int i = 0; i < data.length; i++) {

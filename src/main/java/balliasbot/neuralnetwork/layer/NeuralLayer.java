@@ -14,5 +14,4 @@ public abstract class NeuralLayer {
 	
 	public abstract Vector compute(Vector input);
 	
-	
 }
