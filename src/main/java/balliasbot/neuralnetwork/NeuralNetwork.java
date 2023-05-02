@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import balliasbot.math.ActivationFunction;
-import balliasbot.math.CostFunction;
 import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
 import balliasbot.neuralnetwork.layer.NeuralLayer;
 
-public abstract class NeuralNetwork {
+public class NeuralNetwork {
 
 	protected final List<NeuralLayer> layers;
 
@@ -40,35 +39,37 @@ public abstract class NeuralNetwork {
 				List<Vector> outputsForEachLayer = new ArrayList<>();
 				
 				Vector output = inputs.get(j);
-				
-				for(int k = 0; i < layers.size(); k++) {
+				for(int k = 0; k < layers.size(); k++) {
 					inputsForEachLayer.add(output);
 					output = layers.get(k).compute(output);
 					outputsForEachLayer.add(output);
 				}
+				allOutputs.add(output);
 				
 				Vector error = output.minus(targets.get(j));
-				double mse = CostFunction.meanSquaredError(error);	
+				double mse = meanSquaredError(error);	
 				
 				for(int k = layers.size() - 1; k >= 0; k--) {
 					error = layers.get(k).backpropagate(error, inputsForEachLayer.get(k), 
 							outputsForEachLayer.get(k), learningRate);
-					
 				}
-				
+								
+				if(i % 10 == 0) {
+					System.out.println(mse);
+				}
 			}
 		}
 		
-		return outputs;
+		return allOutputs;
 	}
 	
-	private void backwardsPass(Vector output, Vector target, double learningRate) {
-
+	public static double meanSquaredError(Vector errors) {
+		double sum = 0;
+		for(int i = 0; i < errors.size(); i++) {
+			sum += Math.pow(errors.get(i), 2);
+		}
 		
-		
-		
-		
+		return sum / errors.size();
 	}
-
 	
 }

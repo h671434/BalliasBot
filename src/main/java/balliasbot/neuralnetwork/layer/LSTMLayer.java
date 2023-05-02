@@ -74,9 +74,9 @@ public class LSTMLayer extends NeuralLayer {
 	}
 
 	@Override
-	public Vector backpropagate(Vector error, Vector output, double learningRate) {
+	public Vector backpropagate(Vector error, Vector input, Vector output, double learningRate) {
 		// TODO Auto-generated method stub
-		return error;
+		return null;
 	}
 	
 }

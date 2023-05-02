@@ -13,6 +13,9 @@ public class LSTMNetworkTest {
 	private static final int NUMBER_OF_LAYERS = 4;
 	private static final int NUMBER_OF_NEURONS = 32;
 	
+	private static final int EPOCHS = 4;
+	private static final double LEARNING_RATE = 0.17;
+	
 	public static void main(String[] args) {
 		List<Vector> inputs = new ArrayList<>();
 		List<Vector> targets =  new ArrayList<>();
@@ -38,7 +41,7 @@ public class LSTMNetworkTest {
 		LSTMNetwork network = new LSTMNetwork(
 				NUMBER_OF_INPUTS, NUMBER_OF_LAYERS, neuronsPerLayer, NUMBER_OF_OUTPUTS);
 		
-		List<Vector> outputs = network.train(inputs, targets, 1, 0.07);
+		List<Vector> outputs = network.train(inputs, targets, EPOCHS, LEARNING_RATE);
 		
 		for(int i = 0; i < inputs.size(); i++) {
 			System.out.println("input " + inputs.get(i).toString());				

@@ -21,14 +21,10 @@ applicationDefaultJvmArgs = ["-Djna.library.path=" + dllDirectory]
 dependencies {
     // Fetch the rlbot framework jar file
     compile 'org.rlbot.commons:framework:2.+'
-    
-    // Fetch deeplearning4j for machinelearning
-    compile 'org.deeplearning4j:deeplearning4j-core:0.9.1'
 
     // This is makes it easy to find the dll when running in intellij, where JVM args don't get passed from gradle.
     runtime files(dllDirectory)
 }
-
 
 task createDllDirectory {
     mkdir dllDirectory
