@@ -14,4 +14,6 @@ public abstract class NeuralLayer {
 	
 	public abstract Vector compute(Vector input);
 	
+	public abstract Vector backpropagate(Vector error, Vector input, Vector output, double learningRate); 
+	
 }

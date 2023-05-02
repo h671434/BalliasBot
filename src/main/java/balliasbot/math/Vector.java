@@ -193,6 +193,30 @@ public class Vector implements Iterable<Double> {
     	
     	return new Vector(newData);
     }
+    
+    public double max() {
+    	double max = data[0];
+    	for(int i = 1; i < data.length; i++) {
+    		if(data[i] > max) {
+    			max = data[i];
+    		}
+    	}
+    	
+    	return max;
+    }
+    
+    public int argmax() {
+    	double max = data[0];
+    	int maxIndex = 0;
+    	for(int i = 1; i < data.length; i++) {
+    		if(data[i] > max) {
+    			max = data[i];
+    			maxIndex = i;
+    		}
+    	}
+    	
+    	return maxIndex;
+    }
 
 	@Override
 	public Iterator<Double> iterator() {

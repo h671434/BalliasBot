@@ -12,7 +12,7 @@ import balliasbot.neuralnetwork.layer.NeuralLayer;
 public abstract class NeuralNetwork {
 
 	protected final List<NeuralLayer> layers;
-	
+
 	protected NeuralNetwork() {
 		this.layers = new ArrayList<>();
 	}
@@ -32,13 +32,29 @@ public abstract class NeuralNetwork {
 	
 	public List<Vector> train(List<Vector> inputs, List<Vector> targets, 
 			int epochs, double learningRate) {
-		List<Vector> outputs = new ArrayList<>();
+		List<Vector> allOutputs = new ArrayList<>();
 		
 		for(int i = 0; i < epochs; i++) {
 			for(int j = 0; j < targets.size(); j++) {
-				outputs.add(predict(inputs.get(j)));
+				List<Vector> inputsForEachLayer = new ArrayList<>();
+				List<Vector> outputsForEachLayer = new ArrayList<>();
 				
-				double error = CostFunction.meanSquaredError(outputs.get(i), targets.get(i));
+				Vector output = inputs.get(j);
+				
+				for(int k = 0; i < layers.size(); k++) {
+					inputsForEachLayer.add(output);
+					output = layers.get(k).compute(output);
+					outputsForEachLayer.add(output);
+				}
+				
+				Vector error = output.minus(targets.get(j));
+				double mse = CostFunction.meanSquaredError(error);	
+				
+				for(int k = layers.size() - 1; k >= 0; k--) {
+					error = layers.get(k).backpropagate(error, inputsForEachLayer.get(k), 
+							outputsForEachLayer.get(k), learningRate);
+					
+				}
 				
 			}
 		}
@@ -46,6 +62,13 @@ public abstract class NeuralNetwork {
 		return outputs;
 	}
 	
+	private void backwardsPass(Vector output, Vector target, double learningRate) {
+
+		
+		
+		
+		
+	}
 
 	
 }

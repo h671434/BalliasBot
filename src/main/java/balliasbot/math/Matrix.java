@@ -19,8 +19,14 @@ public class Matrix {
 		return data[row][column];
 	}
 	
-	public void set(int row, int column, double value) {
-		data[row][column] = value;
+
+	public double[][] asArray() {
+		double[][] arr = new double[rows][columns];
+		for(int i = 0; i < rows; i++) {
+			arr[i] = getRowVector(i).asArray();
+		}
+		
+		return arr;
 	}
 	
 	public Vector getRowVector(int row) {

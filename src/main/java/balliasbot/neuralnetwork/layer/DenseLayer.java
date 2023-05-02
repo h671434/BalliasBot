@@ -32,10 +32,22 @@ public class DenseLayer extends NeuralLayer {
 		return activation.calculate(preActivation);
 	}
 	
-	public void updateWeights(Vector input, Vector error, double learningRate) {
-		Vector adjusmtent = input.multiplyPointwise(error).scale(learningRate);
+	@Override
+	public Vector backpropagate(Vector error, Vector input, Vector output, double learningRate) {
+		Vector derivativeOutput = activation.derivative(output);
 		
-		weights = weights.minus(adjusmtent);
+		error = weights.transform().dot(error.multiplyPointwise(derivativeOutput));
+		
+		double[][] newWeightData = new double[weights.rows][weights.columns];
+		for(int i = 0; i < weights.rows; i++) {
+			for(int j = 0; j < weights.columns; j++) {
+				newWeightData[i][j] = weights.get(i, j) - (learningRate * error.get(j) * input.get(j));
+			}
+		}
+		
+		weights = new Matrix(newWeightData);
+		
+		return error;
 	}
-
+	
 }

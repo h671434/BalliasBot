@@ -1,17 +1,20 @@
 package balliasbot.math;
 
 public interface CostFunction {
-
-	public static double meanSquaredError(Vector output, Vector target) {
-		double[] outputArray = output.asArray();
-		double[] targetArray = target.asArray();
-		
+	
+	public static Vector error(Vector output, Vector target) {
+		return output.minus(target);
+	}
+	
+	public static double meanSquaredError(Vector errors) {
 		double sum = 0;
-		for(int i = 0; i < outputArray.length; i++) {
-			sum += Math.pow(outputArray[i] - targetArray[i], 2);
+		for(int i = 0; i < errors.size(); i++) {
+			sum += Math.pow(errors.get(i), 2);
 		}
 		
-		return sum / outputArray.length;
+		return sum / errors.size();
 	}
+	
+	
 	
 }

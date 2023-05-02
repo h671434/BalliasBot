@@ -33,9 +33,14 @@ public class DropoutLayer extends NeuralLayer {
 		
 		return new Vector(data);
 	}
-	
+
+	@Override
+	public Vector backpropagate(Vector error, Vector output, double learningRate) {
+		return error;
+	}
+
 	public void setRate(double rate) {
 		this.rate = rate;
 	}
-
+	
 }

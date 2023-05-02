@@ -10,6 +10,7 @@ import balliasbot.neuralnetwork.layer.DenseLayer;
 import balliasbot.neuralnetwork.layer.DropoutLayer;
 import balliasbot.neuralnetwork.layer.LSTMLayer;
 import balliasbot.neuralnetwork.layer.NormalizationLayer;
+import balliasbot.neuralnetwork.layer.OutputLayer;
 import balliasbot.neuralnetwork.weights.WeightInitializer;
 
 public class LSTMNetwork extends NeuralNetwork {
@@ -25,7 +26,7 @@ public class LSTMNetwork extends NeuralNetwork {
 			layers.add(new DropoutLayer(weightsPerLayer, 0.04));
 		}
 		
-		layers.add(new DenseLayer(weightsPerLayer, numberOfOutputs, ActivationFunction.TANH));
+		layers.add(new OutputLayer(weightsPerLayer, numberOfOutputs, ActivationFunction.TANH));
 	}
 
 	
