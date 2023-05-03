@@ -251,4 +251,20 @@ public class Vector implements Iterable<Double> {
 		return out.toString();
 	}
 	
+	public String toStringFormated(int numberOfDecimals) {
+		StringBuilder out = new StringBuilder();
+		
+		out.append("(");
+		for(int i = 0; i < data.length; i++) {
+			out.append(String .format("%0," + numberOfDecimals + "f", data[i]));
+			
+			if(i != data.length - 1) {
+				out.append(" ,");
+			}
+		}
+		out.append(")");
+		
+		return out.toString();
+	}
+	
 }

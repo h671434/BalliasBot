@@ -17,10 +17,10 @@ public class NeuralNetworkTest {
 	private static final int NUMBER_OF_LAYERS = 4;
 	private static final int NUMBER_OF_NEURONS = 128;
 	
-	private static final int DATASET_SIZE = 300;
+	private static final int DATASET_SIZE = 50;
 	
-	private static final int EPOCHS = 100;
-	private static final double LEARNING_RATE = 0.07;
+	private static final int EPOCHS = 500;
+	private static final double LEARNING_RATE = 0.007;
 	
 	public static void main(String[] args) {
 		int neuronsPerLayer = NUMBER_OF_NEURONS / NUMBER_OF_LAYERS;
@@ -47,7 +47,7 @@ public class NeuralNetworkTest {
 			
 			double[] targetData = new double[NUMBER_OF_OUTPUTS];
 			for(int j = 0; j < NUMBER_OF_OUTPUTS; j++) {
-				targetData[j] = 1 / (j+1) * 0.5;
+				targetData[j] = 1 / (double)(j+1) * 0.5;
 			}
 			targets.add(new Vector(targetData));
 		}			
