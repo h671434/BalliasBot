@@ -28,9 +28,11 @@ public class NeuralNetworkTest {
 		List<NeuralLayer> layers = new ArrayList<>(NUMBER_OF_LAYERS);
 		layers.add(new NormalizationLayer(0, 1));
 		layers.add(new DenseLayer(NUMBER_OF_INPUTS, neuronsPerLayer, ActivationFunction.SIGMOID));
+		
 		for(int i = 2; i < NUMBER_OF_LAYERS; i++) {
 			layers.add(new DenseLayer(neuronsPerLayer, neuronsPerLayer, ActivationFunction.SIGMOID));
 		}
+		
 		layers.add(new DenseLayer(neuronsPerLayer, NUMBER_OF_OUTPUTS, ActivationFunction.SIGMOID));
 			
 		NeuralNetwork network = new NeuralNetwork(layers);
@@ -38,21 +40,26 @@ public class NeuralNetworkTest {
 		List<Vector> inputs = new ArrayList<>();
 		List<Vector> targets =  new ArrayList<>();
 		Random random = new Random();
+		
 		for(int i = 0; i < DATASET_SIZE; i++) {
 			double[] inputData = new double[NUMBER_OF_INPUTS];
+			
 			for(int j = 0; j < NUMBER_OF_INPUTS; j++) {
 				inputData[j] = (j+1) * 3;
 			}
+			
 			inputs.add(new Vector(inputData));
 			
 			double[] targetData = new double[NUMBER_OF_OUTPUTS];
+			
 			for(int j = 0; j < NUMBER_OF_OUTPUTS; j++) {
 				targetData[j] = 1 / (double)(j+1) * 0.5;
 			}
+			
 			targets.add(new Vector(targetData));
 		}			
 				
-		List<Vector> outputs = network.train(inputs, targets, EPOCHS, LEARNING_RATE);
+		network.train(inputs, targets, EPOCHS, LEARNING_RATE);
 		
 	}
 	
