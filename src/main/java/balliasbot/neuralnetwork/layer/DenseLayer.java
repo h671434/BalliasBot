@@ -1,7 +1,5 @@
 package balliasbot.neuralnetwork.layer;
 
-import org.json.simple.JSONObject;
-
 import balliasbot.math.ActivationFunction;
 import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
