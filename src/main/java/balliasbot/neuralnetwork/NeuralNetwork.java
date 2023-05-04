@@ -79,12 +79,18 @@ public class NeuralNetwork {
 		Vector error = outputError;
 		
 		for(int i = layers.size() - 1; i >= 0; i--) {
-			NeuralLayer layer = layers.get(i);
-			Vector input = layerInputs.get(i);
-			Vector output = layerOutputs.get(i);
-			
-			error = layer.backpropagate(error, input, output, learningRate);
+			error = layers.get(i).backpropagate(error, layerInputs.get(i), 
+					layerOutputs.get(i), learningRate);
 		}
+	}
+	
+	private static double meanSquaredError(Vector errors) {
+		double sum = 0;
+		for(int i = 0; i < errors.size(); i++) {
+			sum += Math.pow(errors.get(i), 2);
+		}
+		
+		return sum / errors.size();
 	}
 	
 	private Vector meanSquaredError(List<Vector> errors) {
@@ -101,16 +107,6 @@ public class NeuralNetwork {
 		}
 		
 		return new Vector(meanSquaredErrorOfAllVectors);
-	}
-	
-	private static double meanSquaredError(Vector errors) {
-		double sum = 0;
-		
-		for(int i = 0; i < errors.size(); i++) {
-			sum += Math.pow(errors.get(i), 2);
-		}
-		
-		return sum / errors.size();
 	}
 	
 	public void save(String networkLabel) {
