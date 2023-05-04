@@ -60,7 +60,6 @@ public class NeuralNetworkTest {
 		}			
 				
 		network.train(inputs, targets, EPOCHS, LEARNING_RATE);
-		
 	}
 	
 }

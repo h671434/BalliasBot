@@ -3,7 +3,7 @@ package balliasbot.neuralnetwork.layer;
 import balliasbot.math.ActivationFunction;
 import balliasbot.math.Matrix;
 import balliasbot.math.Vector;
-import balliasbot.neuralnetwork.weights.WeightInitializer;
+import balliasbot.neuralnetwork.data.WeightInitializer;
 
 public class DenseLayer extends NeuralLayer {
 

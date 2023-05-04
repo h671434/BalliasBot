@@ -1,4 +1,4 @@
-package balliasbot.neuralnetwork.weights;
+package balliasbot.neuralnetwork.data;
 
 import java.util.Random;
 

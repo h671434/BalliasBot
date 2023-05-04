@@ -10,14 +10,17 @@ import balliasbot.neuralnetwork.layer.NeuralLayer;
 
 public class NeuralNetwork {
 
+	public final String networkLabel;
 	protected final List<NeuralLayer> layers;
-
-	protected NeuralNetwork() {
-		this.layers = new ArrayList<>();
+	
+	public NeuralNetwork(String networkLabel, List<NeuralLayer> layers) {
+		this.networkLabel = networkLabel;
+		this.layers = layers;
 	}
 	
-	public NeuralNetwork(List<NeuralLayer> layers) {
-		this.layers = layers;
+	protected NeuralNetwork(String networkLabel) {
+		this.networkLabel = networkLabel;
+		this.layers = new ArrayList<>();
 	}
 	
 	public Vector predict(Vector inputs) {
@@ -105,13 +108,8 @@ public class NeuralNetwork {
 		return new Vector(meanSquaredErrors);
 	}
 	
-	public void save(String networkLabel) {
+	public void save() {
 		// TODO
-	}
-	
-	public static NeuralNetwork loadExistingNetwork(String networkLabel) {
-		// TODO
-		return null;
 	}
 	
 }
