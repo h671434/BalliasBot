@@ -29,6 +29,9 @@ public class NeuralNetwork {
 		return output;
 	}
 	
+	/**
+	 * Adds the inputs and outputs of each layer into lists. Used when training.
+	 */
 	private Vector predict(Vector input, List<Vector> layerInputs, List<Vector> layerOutputs) {
 		Vector output = null;
 		for(int k = 0; k < layers.size(); k++) {
@@ -54,6 +57,8 @@ public class NeuralNetwork {
 				
 				Vector output = predict(inputs.get(j), layerInputs, layerOutputs);
 				
+				allOutputs.add(output);
+				
 				Vector outputError =  output.minus(targets.get(j));
 				double mse = meanSquaredError(outputError);	
 				
@@ -72,29 +77,23 @@ public class NeuralNetwork {
 	private void backpropogate(Vector outputError, List<Vector> layerInputs, 
 			List<Vector> layerOutputs, double learningRate) {
 		Vector error = outputError;
-		for(int i = layers.size() - 1; i >= 0; i--) {
-			error = layers.get(i).backpropagate(error, layerInputs.get(i), 
-					layerOutputs.get(i), learningRate);
-		}
-	}
-	
-	private static double meanSquaredError(Vector errors) {
-		double sum = 0;
-		for(int i = 0; i < errors.size(); i++) {
-			sum += Math.pow(errors.get(i), 2);
-		}
 		
-		return sum / errors.size();
+		for(int i = layers.size() - 1; i >= 0; i--) {
+			NeuralLayer layer = layers.get(i);
+			Vector input = layerInputs.get(i);
+			Vector output = layerOutputs.get(i);
+			
+			error = layer.backpropagate(error, input, output, learningRate);
+		}
 	}
 	
 	private Vector meanSquaredError(List<Vector> errors) {
-		int amountOfVectors = errors.size();
-		int vectorSize = errors.get(0).size();
+		double[] meanSquaredErrorOfAllVectors = new double[errors.get(0).size()];
 		
-		double[] meanSquaredErrorOfAllVectors = new double[vectorSize];
-		for(int i = 0; i < vectorSize; i++) {
-			double[] errorsAtCurrentIndex = new double[amountOfVectors];
-			for(int j = 0; j < amountOfVectors; j++) {
+		for(int i = 0; i < errors.get(0).size(); i++) {
+			double[] errorsAtCurrentIndex = new double[errors.size()];
+			
+			for(int j = 0; j < errors.size(); j++) {
 				errorsAtCurrentIndex[j] = errors.get(j).get(i);
 			}
 			
@@ -102,6 +101,25 @@ public class NeuralNetwork {
 		}
 		
 		return new Vector(meanSquaredErrorOfAllVectors);
+	}
+	
+	private static double meanSquaredError(Vector errors) {
+		double sum = 0;
+		
+		for(int i = 0; i < errors.size(); i++) {
+			sum += Math.pow(errors.get(i), 2);
+		}
+		
+		return sum / errors.size();
+	}
+	
+	public void save(String networkLabel) {
+		// TODO
+	}
+	
+	public static NeuralNetwork loadExistingNeuralNetwork(String networkLabel) {
+		// TODO
+		return null;
 	}
 	
 }

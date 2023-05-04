@@ -5,17 +5,28 @@ import java.util.function.Function;
 
 public class Vector implements Iterable<Double> {
 
-	private double[] data;
+	private final double[] data;
 	
 	public Vector(double[] data) {
 		this.data = data;
 	}
 	
 	public Vector(Vector vector) {
-		data = new double[vector.data.length];
+		this.data = new double[vector.data.length];
+		
 		for(int i = 0; i < data.length; i++) {
 			data[i] = vector.data.length;
 		}
+	}
+	
+	public static Vector generateNewVector(int size, Function<Integer, Double> valuesByIndex) {
+		double[] newData = new double[size];
+		
+		for(int i = 0; i < size; i++) {
+			newData[i] = valuesByIndex.apply(i);
+		}
+		
+		return new Vector(newData);
 	}
 	
 	public double get(int index) {
@@ -24,6 +35,7 @@ public class Vector implements Iterable<Double> {
 	
 	public double[] asArray() {
 		double[] copy = new double[data.length];
+		
 		for(int i = 0; i < data.length; i++) {
 			copy[i] = data[i];
 		}
@@ -41,6 +53,7 @@ public class Vector implements Iterable<Double> {
     	}
     	
     	double[] newArray = new double[data.length];
+    	
         for(int i = 0; i < data.length; i++) {
         	newArray[i] = data[i] + other.data[i];
         }
@@ -50,6 +63,7 @@ public class Vector implements Iterable<Double> {
     
     public Vector plus(double x) {
     	double[] newData = new double[data.length];
+    	
     	for(int i = 0; i < data.length; i++) {
     		newData[i] = data[i] + x;
     	}
@@ -63,6 +77,7 @@ public class Vector implements Iterable<Double> {
     	}
     	
     	double[] newArray = new double[data.length];
+    	
         for(int i = 0; i < data.length; i++) {
         	newArray[i] = data[i] - other.data[i];
         }
@@ -72,6 +87,7 @@ public class Vector implements Iterable<Double> {
 
     public Vector scale(double scale) {
     	double[] newArray = new double[data.length];
+    	
         for(int i = 0; i < data.length; i++) {
         	newArray[i] = data[i] * scale;
         }
@@ -138,28 +154,15 @@ public class Vector implements Iterable<Double> {
      * Returns a new vector where all values from both vectors are included.
      */
     public Vector concat(Vector vector) {
-    	int size = data.length + vector.data.length;
-    	double[] newData = new double[size];
+    	double[] newData = new double[data.length + vector.data.length];
     	
-    	for(int i = 0; i < size; i++) {
+    	for(int i = 0; i < newData.length; i++) {
     		if(i < data.length) {
     			newData[i] = data[i];
     		} else {
     			newData[i] = vector.data[i - data.length]; 
     		}
     	}
-    	
-    	return new Vector(newData);
-    }
-    
-    public Vector concat(double value) {
-    	double[] newData = new double[data.length + 1];
-    	
-    	for(int i = 0; i < data.length; i++) {
-    		newData[i] = data[i];
-    	}
-    	
-    	newData[data.length] = value;
     	
     	return new Vector(newData);
     }
@@ -174,6 +177,7 @@ public class Vector implements Iterable<Double> {
     	}
     	
     	double[] newData = new double[data.length];
+    	
     	for(int i = 0; i < data.length; i++) {
     		newData[i] = data[i] * vector.data[i];
     	}
@@ -187,6 +191,7 @@ public class Vector implements Iterable<Double> {
      */
     public Vector applyFunction(Function<Double, Double> function) {
     	double[] newData = new double[data.length];
+    	
     	for(int i = 0; i < data.length; i++) {
     		newData[i] = function.apply(data[i]);
     	}
@@ -196,6 +201,7 @@ public class Vector implements Iterable<Double> {
     
     public double max() {
     	double max = data[0];
+    	
     	for(int i = 1; i < data.length; i++) {
     		if(data[i] > max) {
     			max = data[i];
@@ -208,6 +214,7 @@ public class Vector implements Iterable<Double> {
     public int argmax() {
     	double max = data[0];
     	int maxIndex = 0;
+    	
     	for(int i = 1; i < data.length; i++) {
     		if(data[i] > max) {
     			max = data[i];
@@ -244,7 +251,11 @@ public class Vector implements Iterable<Double> {
 		
 		out.append("(");
 		for(int i = 0; i < data.length; i++) {
-			out.append(data[i] + ",");
+			out.append(data[i]);
+			
+			if(i != data.length - 1) {
+				out.append(", ");
+			}
 		}
 		out.append(")");
 		
@@ -259,7 +270,7 @@ public class Vector implements Iterable<Double> {
 			out.append(String .format("%0," + numberOfDecimals + "f", data[i]));
 			
 			if(i != data.length - 1) {
-				out.append(" ,");
+				out.append(", ");
 			}
 		}
 		out.append(")");
