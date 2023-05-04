@@ -25,6 +25,7 @@ public class NeuralNetwork {
 	
 	public Vector predict(Vector inputs) {
 		Vector output = inputs;
+		
 		for(int i = 0; i < layers.size(); i++) {
 			output = layers.get(i).compute(output);
 		}
@@ -32,11 +33,9 @@ public class NeuralNetwork {
 		return output;
 	}
 	
-	/**
-	 * Adds the inputs and outputs of each layer into lists. Used when training.
-	 */
 	private Vector predict(Vector input, List<Vector> layerInputs, List<Vector> layerOutputs) {
 		Vector output = null;
+		
 		for(int k = 0; k < layers.size(); k++) {
 			output = layers.get(k).compute(input);
 			

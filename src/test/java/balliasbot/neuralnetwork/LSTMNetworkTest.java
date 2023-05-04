@@ -41,13 +41,8 @@ public class LSTMNetworkTest {
 		LSTMNetwork network = new LSTMNetwork(
 				NUMBER_OF_INPUTS, NUMBER_OF_LAYERS, neuronsPerLayer, NUMBER_OF_OUTPUTS);
 		
-		List<Vector> outputs = network.train(inputs, targets, EPOCHS, LEARNING_RATE);
+		network.train(inputs, targets, EPOCHS, LEARNING_RATE);
 		
-		for(int i = 0; i < inputs.size(); i++) {
-			System.out.println("input " + inputs.get(i).toString());				
-			System.out.println("target" + targets.get(i).toString());
-			System.out.println("output" + outputs.get(i).toString());
-		}
 	}
 	
 }

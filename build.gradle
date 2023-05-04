@@ -22,7 +22,7 @@ dependencies {
     // Fetch the rlbot framework jar file
     implementation 'org.rlbot.commons:framework:2.+'
 
-    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
 
     // This is makes it easy to find the dll when running in intellij, where JVM args don't get passed from gradle.
     runtimeOnly files(dllDirectory)
