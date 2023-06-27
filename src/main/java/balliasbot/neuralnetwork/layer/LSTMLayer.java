@@ -30,10 +30,10 @@ public class LSTMLayer extends NeuralLayer {
 		this.outputGate = new DenseLayer(
 				numberOfInputs + numberOfOutputs, numberOfOutputs, ActivationFunction.SIGMOID);
 		
-		initializePreviousCellData();
+		initializeCellData();
 	}
 	
-	private void initializePreviousCellData() {
+	private void initializeCellData() {
 		double[] previousCellStateData = new double[numberOfOutputs];
 		double[] previousCellOutputData = new double[numberOfOutputs];
 		

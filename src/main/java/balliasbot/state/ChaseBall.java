@@ -18,13 +18,14 @@ public class ChaseBall extends State {
 	
 	@Override
 	public ControlsOutput exec(DataPacket data) {
+		
 		if(limitStateDuration(data.currentTime)) {
 			return null;
 		}
 		
 		Vector3 targetPosition = data.ball.position;
 		double targetSpeed = 1400;
-		
+
 		data.bot.renderer.drawLine3d(Color.RED, data.car.position, targetPosition);
 		
 		return new DriveControls(data.car, targetPosition, targetSpeed) ;
