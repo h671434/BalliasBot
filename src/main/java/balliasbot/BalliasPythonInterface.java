@@ -5,7 +5,7 @@ import rlbot.manager.BotManager;
 import rlbot.pyinterop.SocketServer;
 
 public class BalliasPythonInterface extends SocketServer {
-
+	
     public BalliasPythonInterface(int port, BotManager botManager) {
         super(port, botManager);
     }

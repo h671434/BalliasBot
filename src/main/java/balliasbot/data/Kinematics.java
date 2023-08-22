@@ -4,7 +4,7 @@ import balliasbot.math.RotationMatrix;
 import balliasbot.math.Vector3;
 import rlbot.flat.Physics;
 
-public class KinematicInstant {
+public class Kinematics {
 
 	public final Vector3 position;
 	public final RotationMatrix orientation;
@@ -12,7 +12,7 @@ public class KinematicInstant {
 	public final Vector3 angularVelocity;
 	public final double time;
 	
-	public KinematicInstant(Physics physics, double time) {
+	public Kinematics(Physics physics, double time) {
         this.position = new Vector3(physics.location());
         this.velocity = new Vector3(physics.velocity());
         this.orientation = RotationMatrix.eulerToRotation(
@@ -23,7 +23,7 @@ public class KinematicInstant {
         this.time = time;
 	}
 	
-	public KinematicInstant(Vector3 position, RotationMatrix orientation, Vector3 velocity, 
+	public Kinematics(Vector3 position, RotationMatrix orientation, Vector3 velocity, 
 			Vector3 angularVelocity, double time) {
 		this.position = position;
 		this.orientation = orientation;
@@ -32,7 +32,7 @@ public class KinematicInstant {
 		this.time = time;
 	}
 	
-	public KinematicInstant(KinematicInstant instant) {
+	public Kinematics(Kinematics instant) {
 		this(instant.position, 
 				instant.orientation,
 				instant.velocity, 
@@ -44,7 +44,7 @@ public class KinematicInstant {
     	return vec.minus(position);
     }
     
-	public Vector3 pointingTo(KinematicInstant other) {
+	public Vector3 pointingTo(Kinematics other) {
     	return pointingTo(other.position);
     }
 	
@@ -54,7 +54,7 @@ public class KinematicInstant {
     	return orientation.local(direction);
     }
     
-    public Vector3 inLocalCoordinates(KinematicInstant other) {
+    public Vector3 inLocalCoordinates(Kinematics other) {
     	return inLocalCoordinates(other.position);
     }
     

@@ -2,20 +2,21 @@ package balliasbot.maneuver;
 
 import balliasbot.controls.ControlsOutput;
 import balliasbot.data.DataPacket;
+import balliasbot.state.State;
 
-public class SpeedFlip implements Maneuver {
+public class HalfFlipTestState extends State {
 
-	private boolean done = false;
-	
+	@Override
+	public boolean isViable(DataPacket data) {
+		return true;
+	}
+
 	@Override
 	public ControlsOutput exec(DataPacket data) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public boolean done() {
-		return done;
-	}
+	
 	
 }

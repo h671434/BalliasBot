@@ -10,7 +10,7 @@ import rlbot.flat.BallInfo;
 import rlbot.flat.BallPrediction;
 import rlbot.flat.Physics;
 
-public class Ball extends KinematicInstant {
+public class Ball extends Kinematics {
 	
     public final BallTouch latestTouch;
     public final boolean hasBeenTouched;
@@ -21,7 +21,7 @@ public class Ball extends KinematicInstant {
         this.latestTouch = hasBeenTouched ? new BallTouch(ball.latestTouch()) : null;
     }
     
-    public Ball(KinematicInstant instant, boolean hasBeenTouched, BallTouch latestTouch) {
+    public Ball(Kinematics instant, boolean hasBeenTouched, BallTouch latestTouch) {
     	super(instant);
         this.hasBeenTouched = hasBeenTouched;
         this.latestTouch = latestTouch;

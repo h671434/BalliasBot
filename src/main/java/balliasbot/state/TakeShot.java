@@ -2,15 +2,16 @@ package balliasbot.state;
 
 import balliasbot.controls.ControlsOutput;
 import balliasbot.controls.DriveControls;
+import balliasbot.controls.DriveUtils;
 import balliasbot.data.Car;
 import balliasbot.data.DataPacket;
 import balliasbot.data.Field;
-import balliasbot.data.KinematicInstant;
+import balliasbot.data.Kinematics;
 import balliasbot.math.Vector3;
 
-public class TakeShot extends State {
+public class TakeShot extends GoTo {
 	
-	private KinematicInstant targetBallInstant;
+	private Kinematics targetBallInstant;
 	
 	@Override
 	public boolean isViable(DataPacket data) {
@@ -20,12 +21,16 @@ public class TakeShot extends State {
 	@Override
 	public ControlsOutput exec(DataPacket data) {
 		Vector3 nextTargetPosition = findNextTargetPosition(data.car);
-		
 		Vector3 carToBall = data.car.pointingTo(targetBallInstant.position);
 		double remainingTime = targetBallInstant.time - data.currentTime;
 		double targetSpeed = carToBall.magnitude() / remainingTime;
  		
-		return new DriveControls(data.car, nextTargetPosition, targetSpeed);
+		ControlsOutput controls = new ControlsOutput();
+		
+		DriveUtils.controlSpeed(controls, data.car, nextTargetPosition, targetSpeed);
+		DriveUtils.controlSteer(controls, data.car, nextTargetPosition);
+		
+		return controls;
 	}
 	
 	private Vector3 findNextTargetPosition(Car car) {

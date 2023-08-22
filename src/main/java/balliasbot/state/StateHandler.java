@@ -16,14 +16,16 @@ public class StateHandler {
 	
 	private State selectState(DataPacket data) {
 		State states[] = {
-				new ChaseBall()
+				new ChaseBall(data)
 		};
 		
-		for(State state : states) 
-			if(state.isViable(data)) 
+		for(State state : states) {
+			if(state.isViable(data)) {
 				return state;
+			}
+		}
 		
-		return new ChaseBall();
+		return new ChaseBall(data);
 	}
 	
 	public ControlsOutput execState(DataPacket data) {		
@@ -34,6 +36,7 @@ public class StateHandler {
 		renderCurrentState();
 		
 		ControlsOutput stateOutput = currentState.exec(data);
+		
 		if(stateOutput != null) {
 			return stateOutput;
 		}

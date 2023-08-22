@@ -8,7 +8,7 @@ import balliasbot.math.Vector2;
 import balliasbot.math.Vector3;
 import rlbot.flat.PlayerInfo;
 
-public class Car extends KinematicInstant {
+public class Car extends Kinematics {
 	
     /** 
      * Used to find the curvature of the cars trajectory when turning.
@@ -24,7 +24,9 @@ public class Car extends KinematicInstant {
 					new Vector2(1000, 0.02235),
 					new Vector2(1500, 0.001375),
 					new Vector2(1750, 0.0011),
-					new Vector2(2300, 0.00088)});
+					new Vector2(2300, 0.00088)
+					}
+			);
 	
     /** 
      * Used to find the cars acceleration from its current velocity.
@@ -36,8 +38,11 @@ public class Car extends KinematicInstant {
 					new Vector2(0, 1600.0),
 					new Vector2(1400, 160.0),
 					new Vector2(1410, 0.0),
-					new Vector2(2300, 0.0)});
+					new Vector2(2300, 0.0)
+					}
+			);
 	
+	public final Hitbox hitbox = Hitbox.OCTANE;
     public final double boost;
     public final boolean hasWheelContact;
     public final boolean isUpright;
@@ -53,7 +58,7 @@ public class Car extends KinematicInstant {
         this.isUpright = orientation.up.dot(Vector3.UP) > 0.5;
     }
     
-    public Car(KinematicInstant instant, double boost, boolean hasWheelContact, 
+    public Car(Kinematics instant, double boost, boolean hasWheelContact, 
     		boolean isUpright, boolean isSupersonic, int team) {
     	super(instant);
 		this.boost = boost;
@@ -73,6 +78,10 @@ public class Car extends KinematicInstant {
     
     public double throttleAcceleration() {
     	return THROTTLE_ACCELERATION_BY_VELOCITY.getInterpolatedY(speed());
+    }
+    
+    public boolean isOnWallOrCeiling() {
+    	return hasWheelContact && !isUpright;
     }
     
 }
